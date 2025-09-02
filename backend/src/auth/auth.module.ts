@@ -10,11 +10,11 @@ import { JwtStrategy } from './jwt.strategy';
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: {
-        expiresIn: process.env.JWT_EXPIRES_IN
-      }
-    })
+        expiresIn: process.env.JWT_EXPIRES_IN,
+      },
+    }),
   ],
   controllers: [AuthController],
   providers: [AuthService, PrismaService, JwtStrategy],
 })
-export class AuthModule { }
+export class AuthModule {}

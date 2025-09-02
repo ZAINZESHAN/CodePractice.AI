@@ -1,5 +1,12 @@
-import { IsEmail, IsEnum, IsInt, IsOptional, IsString, Length } from "class-validator";
-import { Role } from "@prisma/client";   // enum Role { ADMIN, STUDENT, COMPANY_ROOT, COMPANY_USER }
+import {
+  IsEmail,
+  IsEnum,
+  IsInt,
+  IsOptional,
+  IsString,
+  Length,
+} from 'class-validator';
+import { Role } from '@prisma/client'; // enum Role { ADMIN, STUDENT, COMPANY_ROOT, COMPANY_USER }
 
 export class CreateUserDto {
   @IsString()
@@ -13,12 +20,12 @@ export class CreateUserDto {
   @Length(6, 20)
   password: string;
 
-  @IsEnum(Role, { message: "Invalid role" })
+  @IsEnum(Role, { message: 'Invalid role' })
   role: Role;
 
   @IsOptional()
   @IsInt()
-  companyId?: number;   // sirf company user ke liye zaroori
+  companyId?: number; // sirf company user ke liye zaroori
 }
 
 export class UpdateUserDto {

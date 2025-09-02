@@ -10,16 +10,21 @@ import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guards';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
   @Post('/register')
   register(@Body() dto: RegisterDto) {
     return this.authService.register(dto);
   }
 
+  @Post('/login')
+  login(@Body() dto: LoginDto) {
+    return this.authService.login(dto);
+  }
+
   @Post('/admin/login')
   loginAdmin(@Body() dto: LoginDto) {
-    return this.authService.loginAdmin(dto)
+    return this.authService.loginAdmin(dto);
   }
 
   @Post('/create-company-root')
@@ -34,10 +39,5 @@ export class AuthController {
   @Roles(Role.COMPANY_ROOT)
   createCompanyUser(@Body() dto: CreateCompanyUserDto) {
     return this.authService.createCompanyUser(dto);
-  }
-
-  @Post('/login')
-  login(@Body() dto: LoginDto) {
-    return this.authService.login(dto);
   }
 }
