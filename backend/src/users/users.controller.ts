@@ -1,9 +1,9 @@
 import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { RolesGuard } from 'src/common/guards/roles.guards';
+import { RolesGuard } from 'src/guards/roles.guards';
 import { Role } from '@prisma/client';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guards';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guards';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard, RolesGuard)

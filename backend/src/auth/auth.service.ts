@@ -7,11 +7,11 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/prisma.service';
-import { LoginDto, RegisterDto } from '../common/dto/auth.dto';
+import { LoginDto, RegisterDto } from './dto/auth.dto';
 import * as bcrypt from 'bcryptjs';
 import { Role } from '@prisma/client';
-import { CreateCompanyRootDto } from 'src/common/dto/create-company-root.dto';
-import { CreateCompanyUserDto } from 'src/common/dto/create-company-user.dto';
+import { CreateCompanyRootDto } from 'src/auth/dto/create-company-root.dto';
+import { CreateCompanyUserDto } from 'src/auth/dto/create-company-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -20,7 +20,12 @@ export class AuthService {
     private jwt: JwtService,
   ) {}
 
-  private generateToken(payload: { id?: number; email: string; role: Role }) {
+  private generateToken(payload: {
+    id: number;
+    email: string;
+    role: Role;
+    companyId?: number;
+  }) {
     return this.jwt.sign(payload, { expiresIn: '1d' });
   }
 
@@ -42,6 +47,7 @@ export class AuthService {
     });
 
     return {
+      success: true,
       message: 'User registered successfully',
       token: this.generateToken({
         id: user.id,
@@ -106,7 +112,10 @@ export class AuthService {
 
   // Normal User Login
   async login({ email, password }: LoginDto) {
-    const user = await this.prisma.user.findUnique({ where: { email } });
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+      include: { company: true },
+    });
     if (!user) throw new NotFoundException('User not found');
 
     if (!user.password) {
@@ -136,7 +145,7 @@ export class AuthService {
       email === process.env.ADMIN_EMAIL &&
       password === process.env.ADMIN_PASSWORD
     ) {
-      const token = this.generateToken({ email, role: Role.ADMIN });
+      const token = this.generateToken({ id: 0, email, role: Role.ADMIN });
       return { message: 'Admin logged in successfully', token };
     }
     throw new UnauthorizedException('Invalid admin credentials');

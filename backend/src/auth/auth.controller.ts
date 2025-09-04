@@ -1,12 +1,12 @@
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginDto, RegisterDto } from '../common/dto/auth.dto';
-import { RolesGuard } from 'src/common/guards/roles.guards';
-import { Roles } from 'src/common/decorators/roles.decorator';
+import { LoginDto, RegisterDto } from './dto/auth.dto';
+import { RolesGuard } from 'src/guards/roles.guards';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from '@prisma/client';
-import { CreateCompanyRootDto } from 'src/common/dto/create-company-root.dto';
-import { CreateCompanyUserDto } from 'src/common/dto/create-company-user.dto';
-import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guards';
+import { CreateCompanyRootDto } from 'src/auth/dto/create-company-root.dto';
+import { CreateCompanyUserDto } from 'src/auth/dto/create-company-user.dto';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guards';
 
 @Controller('auth')
 export class AuthController {
@@ -28,8 +28,6 @@ export class AuthController {
   }
 
   @Post('/create-company-root')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
   createCompanyRoot(@Body() dto: CreateCompanyRootDto) {
     return this.authService.createCompanyRoot(dto);
   }

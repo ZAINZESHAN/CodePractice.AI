@@ -1,10 +1,4 @@
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #f4f6f9;
-}
+
 
 .wrapper {
   position: relative;
@@ -119,18 +113,18 @@ body {
   color: #2a5298;
 }
 
-.input-box i {
+.input-box .icon {
   position: absolute;
   top: 50%;
   right: 0;
   transform: translateY(-50%);
-  font-size: 18px;
+  font-size: 17px;
   color: #2d3436;
   transition: all 0.5s ease;
 }
 
-.input-box input:focus ~ i,
-.input-box input:valid ~ i {
+.input-box input:focus ~ .icon,
+.input-box input:valid ~ .icon {
   color: #2a5298;
 }
 
