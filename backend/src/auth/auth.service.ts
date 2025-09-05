@@ -93,6 +93,9 @@ export class AuthService {
           create: {
             name: dto.companyName,
             description: dto.description,
+            website: dto.website,
+            location: dto.location,
+            status: 'PENDING', // 👈 explicitly mark as pending
           },
         },
       },

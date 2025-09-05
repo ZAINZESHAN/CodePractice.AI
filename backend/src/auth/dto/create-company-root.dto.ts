@@ -1,17 +1,30 @@
-import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import { IsEmail, IsOptional, IsString, Length } from 'class-validator';
 
 export class CreateCompanyRootDto {
-  @IsNotEmpty()
-  companyName: string;
-
-  description?: string;
-
-  @IsNotEmpty()
+  @IsString()
+  @Length(3, 30)
   name: string;
 
   @IsEmail()
   email: string;
 
-  @MinLength(6)
+  @IsString()
+  @Length(6, 20)
   password: string;
+
+  @IsString()
+  @Length(2, 50)
+  companyName: string;
+
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  @IsOptional()
+  @IsString()
+  website?: string;
+
+  @IsOptional()
+  @IsString()
+  location?: string;
 }

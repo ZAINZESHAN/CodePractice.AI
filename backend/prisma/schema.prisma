@@ -8,42 +8,54 @@ generator client {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  name      String
-  email     String    @unique
-  password  String
-  role      Role      @default(STUDENT)
-  companyId Int?
-  company   Company?  @relation("CompanyUsers", fields: [companyId], references: [id])
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  Company   Company[] @relation("CompanyRoot")
+  id             Int              @id @default(autoincrement())
+  name           String
+  email          String           @unique
+  password       String
+  role           Role             @default(STUDENT)
+  companyId      Int?
+  company        Company?         @relation("CompanyUsers", fields: [companyId], references: [id])
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  Company        Company[]        @relation("CompanyRoot")
+  JobApplication JobApplication[]
+  bio            String?
+  skills         String?
+  resumeUrl      String? 
 }
 
 model Company {
-  id          Int      @id @default(autoincrement())
+  id          Int           @id @default(autoincrement())
   name        String
   description String?
   website     String?
   location    String?
   logoUrl     String?
   rootId      Int?
-  root        User?    @relation("CompanyRoot", fields: [rootId], references: [id])
-  users       User[]   @relation("CompanyUsers")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  Job         Job[]
+  root        User?         @relation("CompanyRoot", fields: [rootId], references: [id])
+  users       User[]        @relation("CompanyUsers")
+  status      CompanyStatus @default(PENDING)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  jobs        Job[]
+}
+
+enum CompanyStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
 
 model Job {
-  id          Int      @id @default(autoincrement())
-  title       String
-  description String
-  location    String?
-  companyId   Int
-  company     Company  @relation(fields: [companyId], references: [id])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id             Int              @id @default(autoincrement())
+  title          String
+  description    String
+  location       String?
+  companyId      Int
+  company        Company          @relation(fields: [companyId], references: [id])
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  JobApplication JobApplication[]
 }
 
 enum Role {
@@ -51,4 +63,22 @@ enum Role {
   STUDENT
   COMPANY_ROOT
   COMPANY_USER
+}
+
+model JobApplication {
+  id        Int               @id @default(autoincrement())
+  jobId     Int
+  studentId Int
+  status    ApplicationStatus @default(PENDING)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  job     Job  @relation(fields: [jobId], references: [id])
+  student User @relation(fields: [studentId], references: [id])
+}
+
+enum ApplicationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
 }
