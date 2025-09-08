@@ -27,12 +27,12 @@ export class AuthController {
     return this.authService.loginAdmin(dto);
   }
 
-  @Post('/create-company-root')
+  @Post('/register-company-root')
   createCompanyRoot(@Body() dto: CreateCompanyRootDto) {
     return this.authService.createCompanyRoot(dto);
   }
 
-  @Post('/create-company-user')
+  @Post('/register-company-user')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.COMPANY_ROOT)
   createCompanyUser(@Body() dto: CreateCompanyUserDto) {

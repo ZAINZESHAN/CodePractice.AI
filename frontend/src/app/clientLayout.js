@@ -1,12 +1,11 @@
-// ClientLayout.jsx
-"use client";
+"use client"
 import { usePathname } from "next/navigation";
-import Navbar from "./components/Navbar";
-import Footer from "./components/footer";
+import Navbar from "./module/components/Navbar";
+import Footer from "./module/components/footer";
 
 export default function ClientLayout({ children }) {
     const pathname = usePathname();
-    const hideNavbarRoutes = ["/auth"];
+    const hideNavbarRoutes = ["/module/auth"];
     const shouldHideNavbar = hideNavbarRoutes.some((route) =>
         pathname.startsWith(route)
     );

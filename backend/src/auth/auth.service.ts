@@ -149,7 +149,11 @@ export class AuthService {
       password === process.env.ADMIN_PASSWORD
     ) {
       const token = this.generateToken({ id: 0, email, role: Role.ADMIN });
-      return { message: 'Admin logged in successfully', token };
+      return {
+        message: 'Admin logged in successfully',
+        token,
+        user: { id: 0, email, role: Role.ADMIN, name: 'Super Admin' },
+      };
     }
     throw new UnauthorizedException('Invalid admin credentials');
   }

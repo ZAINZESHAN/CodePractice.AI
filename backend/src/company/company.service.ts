@@ -9,23 +9,26 @@ import { CompanyStatus } from '@prisma/client';
 export class CompanyService {
   constructor(private prisma: PrismaService) {}
 
-  // Company create (public endpoint)
-  async createCompany(dto: CreateCompanyDto): Promise<any> {
+  // Create company (by root user, goes to pending)
+  async createCompany(dto: CreateCompanyDto, rootId: number) {
     return this.prisma.company.create({
       data: {
         name: dto.name,
         description: dto.description,
-        status: CompanyStatus.PENDING, // ✅ type-safe
+        status: CompanyStatus.PENDING,
+        rootId, // ✅ root user becomes owner
       },
     });
   }
 
-  // Get all companies (admin use case)
-  async findAll() {
-    return this.prisma.company.findMany();
+  // Get all companies (admin)
+  async findAll(status?: CompanyStatus) {
+    return this.prisma.company.findMany({
+      where: status ? { status } : {},
+    });
   }
 
-  // Get one company by ID
+  // Get company by ID
   async findOne(id: number) {
     const company = await this.prisma.company.findUnique({
       where: { id },
@@ -45,6 +48,9 @@ export class CompanyService {
 
   // Update company status (Admin only)
   async updateStatus(id: number, dto: UpdateCompanyStatusDto) {
+    const company = await this.prisma.company.findUnique({ where: { id } });
+    if (!company) throw new NotFoundException('Company not found');
+
     return this.prisma.company.update({
       where: { id },
       data: { status: dto.status },

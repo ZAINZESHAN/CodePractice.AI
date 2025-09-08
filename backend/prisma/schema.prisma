@@ -30,7 +30,6 @@ model Company {
   description String?
   website     String?
   location    String?
-  logoUrl     String?
   rootId      Int?
   root        User?         @relation("CompanyRoot", fields: [rootId], references: [id])
   users       User[]        @relation("CompanyUsers")

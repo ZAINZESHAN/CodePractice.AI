@@ -2,13 +2,13 @@
 
 import { createContext, useContext, useState, useEffect } from "react";
 
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
 
-  // load auth from localStorage on app start
+  // ✅ Load from localStorage on app start
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     const storedToken = localStorage.getItem("token");
@@ -18,7 +18,15 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  // logout
+  // ✅ Save to localStorage whenever login happens
+  const login = (userData, jwtToken) => {
+    setUser(userData);
+    setToken(jwtToken);
+    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("token", jwtToken);
+  };
+
+  // ✅ Logout
   const logout = () => {
     setUser(null);
     setToken(null);
@@ -27,7 +35,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, setUser, setToken, logout }}>
+    <AuthContext.Provider value={{ user, token, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
