@@ -1,8 +1,8 @@
 import "./globals.css";
 import "antd/dist/reset.css";
 import { ToastContainer } from "react-toastify";
-import { AuthProvider } from "./module/context/AuthContext";
-import ClientLayout from "./clientLayout";
+// import { AuthProvider } from "../context/AuthContext";
+// import ClientLayout from "./clientLayout";
 
 export const metadata = {
   title: "Campus Recruit System",
@@ -13,10 +13,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <AuthProvider>
-           <ClientLayout>{children}</ClientLayout>
+        {/* <AuthProvider> */}
+          {/* <ClientLayout> */}
+            {children}
+            {/* </ClientLayout> */}
           <ToastContainer position="top-right" autoClose={3000} />
-        </AuthProvider>
+        {/* </AuthProvider> */}
       </body>
     </html>
   );

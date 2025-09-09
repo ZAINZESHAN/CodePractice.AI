@@ -21,6 +21,8 @@ async function bootstrap() {
   const cors = {
     origin: ['http://localhost:3000'], // frontend URL
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true, // ✅ yeh add karo
+    allowedHeaders: ['Content-Type', 'Authorization'], // ✅ headers allow
   };
   app.enableCors(cors);
 

@@ -83,7 +83,7 @@ export class UsersService {
           createdAt: true,
         },
       });
-      return users;
+      return users as UserEntity[];
     } else {
       throw new ForbiddenException('You do not have access to company users');
     }

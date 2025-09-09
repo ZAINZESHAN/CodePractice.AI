@@ -22,13 +22,16 @@ import { Role } from '@prisma/client';
 export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
 
-  // ✅ Public: Request to create a company
+  // Public: Request to create a company
   @Post()
-  create(@Body() dto: CreateCompanyDto) {
-    return this.companyService.createCompany(dto);
+  create(
+    @Param('id', ParseIntPipe) rootId: number,
+    @Body() dto: CreateCompanyDto,
+  ) {
+    return this.companyService.createCompany(dto, rootId);
   }
 
-  // ✅ Admin only: View all companies
+  // Admin only: View all companies
   @Get()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
@@ -36,13 +39,13 @@ export class CompanyController {
     return this.companyService.findAll();
   }
 
-  // ✅ Public: View single company
+  // Public: View single company
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.companyService.findOne(id);
   }
 
-  // ✅ Company owner or Admin: Update company
+  // Company owner or Admin: Update company
   @Put(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.COMPANY_ROOT)
@@ -50,7 +53,7 @@ export class CompanyController {
     return this.companyService.update(id, dto);
   }
 
-  // ✅ Admin only: Approve / Reject company
+  // Admin only: Approve / Reject company
   @Put(':id/status')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
@@ -61,7 +64,7 @@ export class CompanyController {
     return this.companyService.updateStatus(id, dto);
   }
 
-  // ✅ Admin only: Delete company
+  // Admin only: Delete company
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN)

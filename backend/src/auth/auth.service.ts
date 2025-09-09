@@ -83,7 +83,7 @@ export class AuthService {
     }
 
     const hashed = await bcrypt.hash(dto.password, 10);
-    const companyRoot = await this.prisma.user.create({
+    const user = await this.prisma.user.create({
       data: {
         name: dto.name,
         email: dto.email,
@@ -103,13 +103,14 @@ export class AuthService {
     });
 
     return {
+      success: true,
       message: 'Company root registered successfully',
       token: this.generateToken({
-        id: companyRoot.id,
-        email: companyRoot.email,
-        role: companyRoot.role,
+        id: user.id,
+        email: user.email,
+        role: user.role,
       }),
-      companyRoot,
+      user,
     };
   }
 
