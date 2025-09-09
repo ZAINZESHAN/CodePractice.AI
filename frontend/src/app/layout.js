@@ -1,8 +1,8 @@
+import Navbar from "@/components/Navbar";
 import "./globals.css";
 import "antd/dist/reset.css";
 import { ToastContainer } from "react-toastify";
-// import { AuthProvider } from "../context/AuthContext";
-// import ClientLayout from "./clientLayout";
+import { AuthProvider } from "@/context/AuthContext";
 
 export const metadata = {
   title: "Campus Recruit System",
@@ -12,13 +12,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
-        {/* <AuthProvider> */}
-          {/* <ClientLayout> */}
-            {children}
-            {/* </ClientLayout> */}
-          <ToastContainer position="top-right" autoClose={3000} />
-        {/* </AuthProvider> */}
+      <body >
+        <AuthProvider>
+        <Navbar />
+        <div className="pt-18 px-4 sm:px-[5vw] md:px-[7vw] lg:px-[4vw]">
+        {children}
+        </div>
+        <ToastContainer position="top-right" autoClose={3000} />
+        </AuthProvider>
       </body>
     </html>
   );
