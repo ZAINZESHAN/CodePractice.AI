@@ -4,24 +4,19 @@ import React, { useState } from "react";
 import { Form, Input, Button, Typography, message, Card, Row, Col } from "antd";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../../../../context/AuthContext";
 import { toast } from "react-toastify";
 import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
 
 const { Title, Text } = Typography;
 const BACKEND_URL = "http://localhost:5000";
 
-const CompanyAuth = () => {
+const CompRootAuth = () => {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const router = useRouter();
 
   const [form] = Form.useForm(); // <- Form instance
-
-  const redirectUser = (role) => {
-    if (role === "COMPANY_ROOT") router.push("/module/pages/company-root/dashboard");
-    else router.push("/");
-  };
 
   const handleSubmit = async (values) => {
     setLoading(true);
@@ -31,7 +26,7 @@ const CompanyAuth = () => {
         login(res.data.user, res.data.token)
         toast.success(res.data.message);
         form.resetFields(); // <- Reset form fields after successful signup
-        redirectUser(res.data.user.role); // <- Redirect user
+        router.push('/routes/comproot-dashboard')
       } 
     } catch (err) {
       toast.error(err.response?.data?.message || "Something went wrong!");
@@ -164,9 +159,9 @@ const CompanyAuth = () => {
         </Form>
 
         <Text style={{ display: "block", marginTop: 15, textAlign: "center" }}>
-          Already have an account?
+          Already have an account?{" "}
           <Link
-            href={'/module/auth/login'}
+            href={'/routes/login'}
             style={{ color: "#003A70", fontWeight: 600, cursor: "pointer" }}
           >
             Login
@@ -177,4 +172,4 @@ const CompanyAuth = () => {
   );
 };
 
-export default CompanyAuth;
+export default CompRootAuth;

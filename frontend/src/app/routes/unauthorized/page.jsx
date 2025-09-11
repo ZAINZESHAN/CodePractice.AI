@@ -1,0 +1,10 @@
+import Unauthorized from '@/components/Unauthorized'
+import React from 'react'
+
+const UnauthorizedPage = () => {
+    return (
+        <Unauthorized />
+    )
+}
+
+export default UnauthorizedPage

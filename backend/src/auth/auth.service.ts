@@ -24,7 +24,7 @@ export class AuthService {
     id: number;
     email: string;
     role: Role;
-    companyId?: number;
+    companyId?: number | null;
   }) {
     return this.jwt.sign(payload, { expiresIn: '1d' });
   }
@@ -53,6 +53,7 @@ export class AuthService {
         id: user.id,
         email: user.email,
         role: user.role,
+        companyId: user.companyId || null,
       }),
       user,
     };
@@ -95,7 +96,7 @@ export class AuthService {
             description: dto.description,
             website: dto.website,
             location: dto.location,
-            status: 'PENDING', // 👈 explicitly mark as pending
+            status: 'PENDING',
           },
         },
       },
@@ -109,6 +110,7 @@ export class AuthService {
         id: user.id,
         email: user.email,
         role: user.role,
+        companyId: user.company?.id,
       }),
       user,
     };
@@ -138,6 +140,7 @@ export class AuthService {
         id: user.id,
         email: user.email,
         role: user.role,
+        companyId: user.companyId || null, // ✅ fixed
       }),
       user,
     };
@@ -174,7 +177,7 @@ export class AuthService {
     }
 
     const hashed = await bcrypt.hash(dto.password, 10);
-    return this.prisma.user.create({
+    const user = await this.prisma.user.create({
       data: {
         name: dto.name,
         email: dto.email,
@@ -183,5 +186,17 @@ export class AuthService {
         companyId: dto.companyId,
       },
     });
+
+    return {
+      success: true,
+      message: 'Company user registered successfully',
+      token: this.generateToken({
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        companyId: user.companyId, // ✅ fixed
+      }),
+      user,
+    };
   }
 }

@@ -23,13 +23,13 @@ const Navbar = () => {
     if (!user) return null;
     switch (user.role) {
       case "STUDENT":
-        return "/module/pages/student/dashboard";
+        return "/routes/student-dashboard";
       case "COMPANY_ROOT":
-        return "/module/pages/company-root/dashboard";
+        return "/routes/comproot-dashboard";
       case "COMPANY_USER":
-        return "/module/pages/company-user/dashboard";
+        return "/routes/compuser-dashboard";
       case "ADMIN":
-        return "/module/pages/admin/dashboard";
+        return "/routes/admin-dashboard";
       default:
         return null;
     }

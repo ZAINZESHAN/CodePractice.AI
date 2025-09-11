@@ -1,49 +1,54 @@
-// "use client";
+import Link from "next/link";
 
-// import React from "react";
-// import { motion } from "framer-motion";
+const Footer = () => {
+  return (
+    <footer className="bg-[#002244] text-white py-8 mt-10">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 sm:px-[5vw] md:px-[7vw] lg:px-[4vw]">
+        {/* About Section */}
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Campus Recruitment System</h3>
+          <p className="text-sm text-gray-300 leading-6">
+            Helping students and companies connect seamlessly for better career
+            opportunities and hiring experiences.
+          </p>
+        </div>
 
-// const Footer = () => {
-//   return (
-//     <footer className="bg-[#003A70] text-white py-10">
-//       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
-//         <motion.div
-//           initial={{ opacity: 0, y: 20 }}
-//           whileInView={{ opacity: 1, y: 0 }}
-//           transition={{ duration: 0.6 }}
-//           viewport={{ once: true }}
-//         >
-//           <h4 className="font-semibold mb-3">About Us</h4>
-//           <p className="text-sm text-gray-200">
-//             CampusRecruit connects students with companies for a brighter future.
-//           </p>
-//         </motion.div>
-//         <motion.div
-//           initial={{ opacity: 0, y: 20 }}
-//           whileInView={{ opacity: 1, y: 0 }}
-//           transition={{ duration: 0.6, delay: 0.2 }}
-//           viewport={{ once: true }}
-//         >
-//           <h4 className="font-semibold mb-3">Contact</h4>
-//           <p className="text-sm text-gray-200">support@campusrecruit.com</p>
-//           <p className="text-sm text-gray-200">+92 300 1234567</p>
-//         </motion.div>
-//         <motion.div
-//           initial={{ opacity: 0, y: 20 }}
-//           whileInView={{ opacity: 1, y: 0 }}
-//           transition={{ duration: 0.6, delay: 0.4 }}
-//           viewport={{ once: true }}
-//         >
-//           <h4 className="font-semibold mb-3">Legal</h4>
-//           <p className="text-sm text-gray-200">Terms & Conditions</p>
-//           <p className="text-sm text-gray-200">Privacy Policy</p>
-//         </motion.div>
-//       </div>
-//       <div className="text-center text-gray-300 text-sm mt-8">
-//         © {new Date().getFullYear()} CampusRecruit. All rights reserved.
-//       </div>
-//     </footer>
-//   );
-// };
+        {/* Quick Links */}
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+          <ul className="space-y-2 text-sm text-gray-300">
+            <li>
+              <Link href="/" className="hover:text-white transition-colors">
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link href="/about" className="hover:text-white transition-colors">
+                About
+              </Link>
+            </li>
+            <li>
+              <Link href="/contact" className="hover:text-white transition-colors">
+                Contact
+              </Link>
+            </li>
+          </ul>
+        </div>
 
-// export default Footer;
+        {/* Contact Section */}
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
+          <p className="text-sm text-gray-300">Email: support@campusrecruit.com</p>
+          <p className="text-sm text-gray-300">Phone: +92 300 1234567</p>
+        </div>
+      </div>
+
+      {/* Bottom Bar */}
+      <div className="border-t border-gray-700 mt-2 pt-4 text-center text-sm text-gray-400">
+        © {new Date().getFullYear()} Campus Recruitment System. All rights reserved.
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;

@@ -3,3 +3,13 @@
 body {
   background-color: #f4f6f9;
 }
+
+.custom-search-input {
+  border: none !important; 
+  border-bottom: 2px solid #ccc;
+}
+
+.custom-search-input:focus,
+.custom-search-input:focus-within {
+  border-bottom: 3px solid #003A70 !important;
+}
