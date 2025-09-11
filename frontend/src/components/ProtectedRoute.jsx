@@ -11,9 +11,8 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   const allowed = rolesArray.map(r => r.toUpperCase());
   const normalizedRole = role?.toString().toUpperCase();
 
-  // ✅ Always call hooks in same order
   useEffect(() => {
-    if (!loading) { // wait until context is ready
+    if (!loading) { 
       if (!user) {
         window.location.href = "/routes/login";
       } else if (!allowed.includes(normalizedRole)) {
@@ -22,7 +21,6 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     }
   }, [user, normalizedRole, allowed, loading]);
 
-  // ✅ conditional render
   if (loading) return null; // still safe, after useEffect
   if (!user || !allowed.includes(normalizedRole)) return null;
 

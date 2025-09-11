@@ -33,8 +33,6 @@ export class AuthController {
   }
 
   @Post('/register-company-user')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.COMPANY_ROOT)
   createCompanyUser(@Body() dto: CreateCompanyUserDto) {
     return this.authService.createCompanyUser(dto);
   }

@@ -1,4 +1,4 @@
-import { ForbiddenException, HttpException, Injectable } from '@nestjs/common';
+import { ForbiddenException, HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { CreateJobDto } from './dto/create-job.dto';
 import { Job } from '@prisma/client';
@@ -9,31 +9,50 @@ export class JobService {
   constructor(private prisma: PrismaService) {}
 
   // create a job
-  async createJob(userId: number, dto: CreateJobDto): Promise<Job> {
+ async createJob(userId: number, dto: CreateJobDto) {
     try {
       const user = await this.prisma.user.findUnique({
         where: { id: userId },
-        include: { company: true },
+        select: { id: true, companyId: true },
       });
 
-      if (!user?.company) {
-        throw new ForbiddenException('Company not found');
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+
+      if (!user.companyId) {
+        throw new ForbiddenException('User is not linked to any company');
+      }
+
+      const company = await this.prisma.company.findUnique({
+        where: { id: user.companyId },
+      });
+      if (!company) {
+        throw new NotFoundException('Company not found');
       }
 
       const job = await this.prisma.job.create({
-        data: {
+        data: { 
           title: dto.title,
           description: dto.description,
-          location: dto.location,
-          companyId: user.company.id,
+          location: dto.location ?? null,
+          companyId: company.id,
         },
       });
+
       return job;
-    } catch {
-      throw new HttpException('Something went wrong', 500);
+    } catch (err) {
+      
+      if (err instanceof HttpException) throw err;
+      
+      throw new HttpException(
+        err?.message || 'Something went wrong while creating job',
+        500,
+      );
     }
   }
-
+  
+  
   // get all company jobs
   async listJobs(userId: number): Promise<Job[]> {
     try {
@@ -42,12 +61,13 @@ export class JobService {
         include: { company: true },
       });
       if (!user?.company) throw new ForbiddenException('Company not found');
-
+      
       return this.prisma.job.findMany({
         where: { companyId: user.company.id },
         orderBy: { createdAt: 'desc' },
       });
-    } catch {
+    } catch (err) {
+      console.error('Job error:', err);
       throw new HttpException('Something went wrong', 500);
     }
   }

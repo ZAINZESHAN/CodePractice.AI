@@ -1,4 +1,4 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Req, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { RolesGuard } from 'src/guards/roles.guards';
 import { Role } from '@prisma/client';
@@ -12,43 +12,50 @@ interface AuthRequest extends Request {
 }
 
 @Controller('users')
-@UseGuards(JwtAuthGuard, RolesGuard) // ✅ JWT + Roles guard applied globally
+@UseGuards(JwtAuthGuard, RolesGuard) // JWT + Roles guard applied globally
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
-  // ✅ Only admin can fetch all users
+  // Only admin can fetch all users
   @Get()
   @Roles(Role.ADMIN)
   async getAllUsers() {
     return this.usersService.getAllUsers();
   }
 
-  // ✅ Admin + Company Root can fetch students
+  // Admin + Company Root can fetch students
   @Get('students')
   @Roles(Role.ADMIN, Role.COMPANY_ROOT)
   async getAllStudents() {
     return this.usersService.getAllStudents();
   }
 
-  // ✅ Only Admin can fetch companies
+  // Only Admin can fetch companies
   @Get('companies')
   @Roles(Role.ADMIN)
   async getAllCompanies() {
     return this.usersService.getAllCompanies();
   }
 
-  // ✅ Admin can fetch all company users
-  // ✅ Company Root can only fetch users of *their own company*
+  // Admin can fetch all company users
+  // Company Root can only fetch users of *their own company*
   @Get('company-users')
   @Roles(Role.ADMIN, Role.COMPANY_ROOT)
   async getAllCompanyUsers(@Req() req: AuthRequest) {
     return this.usersService.getAllCompanyUsers(req.user);
   }
 
-  // ✅ Only Admin can fetch other admins
-  @Get('admins')
-  @Roles(Role.ADMIN)
-  async getAllAdmin() {
-    return this.usersService.getAllAdmins();
+  @Delete('delete/:id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.COMPANY_ROOT)
+  async deleteCompanyUser(@Req() req: AuthRequest, @Param('id') id: string) {
+    return this.usersService.deleteCompanyUser(Number(id), req.user);
   }
+
+  // Only Admin can fetch other admins
+  // @Get('admins')
+  // @Roles(Role.ADMIN)
+  // async getAllAdmin() {
+  //   return this.usersService.getAllAdmins();
+  // }
 }

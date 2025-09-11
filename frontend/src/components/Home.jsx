@@ -14,7 +14,7 @@ const Home = () => {
       icon: <UserOutlined style={{ fontSize: "32px", color: "#002C55" }} />,
     },
     {
-      title: "For Companies",
+      title: "For Employee",
       description:
         "Post jobs, review student profiles, and shortlist candidates quickly with smart filtering tools.",
       icon: <TeamOutlined style={{ fontSize: "32px", color: "#002C55" }} />,

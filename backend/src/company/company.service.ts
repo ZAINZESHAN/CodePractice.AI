@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
-import { UpdateCompanyStatusDto } from './dto/update-company-status.dto';
 import { CompanyStatus } from '@prisma/client';
 
 @Injectable()
@@ -15,7 +14,6 @@ export class CompanyService {
       data: {
         name: dto.name,
         description: dto.description,
-        status: CompanyStatus.PENDING,
         rootId, // ✅ root user becomes owner
       },
     });
@@ -47,13 +45,13 @@ export class CompanyService {
   }
 
   // Update company status (Admin only)
-  async updateStatus(id: number, dto: UpdateCompanyStatusDto) {
+  async updateStatus(id: number, dto: UpdateCompanyDto) {
     const company = await this.prisma.company.findUnique({ where: { id } });
     if (!company) throw new NotFoundException('Company not found');
 
     return this.prisma.company.update({
       where: { id },
-      data: { status: dto.status },
+      data: dto
     });
   }
 

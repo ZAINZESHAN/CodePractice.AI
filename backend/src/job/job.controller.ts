@@ -32,8 +32,9 @@ export class JobController {
   createJob(@Req() req: AuthRequest, @Body() body: CreateJobDto) {
     return this.jobService.createJob(req.user.id, body);
   }
-
+  
   @Get()
+  @UseGuards(JwtAuthGuard)
   listJobs(@Req() req: AuthRequest) {
     return this.jobService.listJobs(req.user.id);
   }

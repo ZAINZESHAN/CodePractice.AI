@@ -26,7 +26,15 @@ export class AuthService {
     role: Role;
     companyId?: number | null;
   }) {
-    return this.jwt.sign(payload, { expiresIn: '1d' });
+    return this.jwt.sign(
+      {
+        sub: payload.id,
+        email: payload.email,
+        role: payload.role,
+        companyId: payload.companyId || null,
+      },
+      { expiresIn: '1d' },
+    );
   }
 
   // Normal Student Register
@@ -140,7 +148,7 @@ export class AuthService {
         id: user.id,
         email: user.email,
         role: user.role,
-        companyId: user.companyId || null, // ✅ fixed
+        companyId: user.companyId || null,
       }),
       user,
     };
@@ -194,7 +202,7 @@ export class AuthService {
         id: user.id,
         email: user.email,
         role: user.role,
-        companyId: user.companyId, // ✅ fixed
+        companyId: user.companyId, 
       }),
       user,
     };

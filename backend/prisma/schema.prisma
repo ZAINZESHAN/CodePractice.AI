@@ -33,16 +33,9 @@ model Company {
   rootId      Int?
   root        User?         @relation("CompanyRoot", fields: [rootId], references: [id])
   users       User[]        @relation("CompanyUsers")
-  status      CompanyStatus @default(PENDING)
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   jobs        Job[]
-}
-
-enum CompanyStatus {
-  PENDING
-  APPROVED
-  REJECTED
 }
 
 model Job {

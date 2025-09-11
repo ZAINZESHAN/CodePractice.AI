@@ -89,18 +89,43 @@ export class UsersService {
     }
   }
 
-  //Get all admins
-  async getAllAdmins(): Promise<UserEntity[]> {
-    const admins = this.prisma.user.findMany({
-      where: { role: Role.ADMIN },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        createdAt: true,
-      },
+  async deleteCompanyUser(
+    userIdToDelete: number,
+    currentUser: { id: number; role: Role; companyId?: number },
+  ) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userIdToDelete },
     });
-    return admins;
+
+    if (!user) throw new Error('User not found');
+
+    // Agar COMPANY_ROOT hai, to sirf apni company ke users delete kar sakta hai
+    if (
+      currentUser.role === Role.COMPANY_ROOT &&
+      user.companyId !== currentUser.companyId
+    ) {
+      throw new ForbiddenException(
+        "You can't delete users from another company",
+      );
+    }
+
+    return await this.prisma.user.delete({
+      where: { id: user.id },
+    });
   }
+
+  //Get all admins
+  // async getAllAdmins(): Promise<UserEntity[]> {
+  //   const admins = this.prisma.user.findMany({
+  //     where: { role: Role.ADMIN },
+  //     select: {
+  //       id: true,
+  //       name: true,
+  //       email: true,
+  //       role: true,
+  //       createdAt: true,
+  //     },
+  //   });
+  //   return admins;
+  // }
 }

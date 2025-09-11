@@ -6,7 +6,6 @@ import React from 'react'
 const CompUserDashboardPage = () => {
     return (
         <ProtectedRoute allowedRoles={['COMPANY_ROOT']}>
-            <CompUserNavbar/>
             <CompUserDashboard />
         </ProtectedRoute>
     )

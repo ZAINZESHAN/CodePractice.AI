@@ -12,7 +12,7 @@ import {
 import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
-import { UpdateCompanyStatusDto } from './dto/update-company-status.dto';
+// import { UpdateCompanyStatusDto } from './dto/update-company-status.dto';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guards';
 import { RolesGuard } from 'src/guards/roles.guards';
 import { Roles } from 'src/auth/decorators/roles.decorator';
@@ -53,16 +53,16 @@ export class CompanyController {
     return this.companyService.update(id, dto);
   }
 
-  // Admin only: Approve / Reject company
-  @Put(':id/status')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
-  updateStatus(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() dto: UpdateCompanyStatusDto,
-  ) {
-    return this.companyService.updateStatus(id, dto);
-  }
+  // // Admin only: Approve / Reject company
+  // @Put(':id/status')
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ADMIN)
+  // updateStatus(
+  //   @Param('id', ParseIntPipe) id: number,
+  //   @Body() dto: UpdateCompanyStatusDto,
+  // ) {
+  //   return this.companyService.updateStatus(id, dto);
+  // }
 
   // Admin only: Delete company
   @Delete(':id')
