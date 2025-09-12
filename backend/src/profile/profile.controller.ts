@@ -25,25 +25,25 @@ interface AuthRequest extends Request {
 }
 
 @Controller('profile')
-@UseGuards(JwtAuthGuard, RolesGuard) // ✅ sab endpoints protected
+@UseGuards(JwtAuthGuard, RolesGuard) // sab endpoints protected
 export class ProfileController {
   constructor(private profileService: ProfileService) {}
 
-  // ✅ All roles can view their own profile
+  // All roles can view their own profile
   @Get('me')
   @Roles(Role.STUDENT, Role.COMPANY_ROOT, Role.COMPANY_USER, Role.ADMIN)
   getProfile(@Req() req: AuthRequest) {
     return this.profileService.getProfile(req.user.id);
   }
 
-  // ✅ All roles can update their own profile
+  // All roles can update their own profile
   @Patch('update')
   @Roles(Role.STUDENT, Role.COMPANY_ROOT, Role.COMPANY_USER, Role.ADMIN)
   updateProfile(@Req() req: AuthRequest, @Body() dto: UpdateProfileDto) {
     return this.profileService.updateProfile(req.user.id, dto);
-  }
+  } 
 
-  // ✅ Only STUDENT can upload resume
+  // Only STUDENT can upload resume
   @Post('upload-resume')
   @UseInterceptors(FileInterceptor('file'))
   @Roles(Role.STUDENT)

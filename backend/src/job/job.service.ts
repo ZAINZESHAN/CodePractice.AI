@@ -1,4 +1,9 @@
-import { ForbiddenException, HttpException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  HttpException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { CreateJobDto } from './dto/create-job.dto';
 import { Job } from '@prisma/client';
@@ -9,7 +14,7 @@ export class JobService {
   constructor(private prisma: PrismaService) {}
 
   // create a job
- async createJob(userId: number, dto: CreateJobDto) {
+  async createJob(userId: number, dto: CreateJobDto) {
     try {
       const user = await this.prisma.user.findUnique({
         where: { id: userId },
@@ -32,9 +37,10 @@ export class JobService {
       }
 
       const job = await this.prisma.job.create({
-        data: { 
+        data: {
           title: dto.title,
           description: dto.description,
+          salary: dto.salary,
           location: dto.location ?? null,
           companyId: company.id,
         },
@@ -42,17 +48,15 @@ export class JobService {
 
       return job;
     } catch (err) {
-      
       if (err instanceof HttpException) throw err;
-      
+
       throw new HttpException(
         err?.message || 'Something went wrong while creating job',
         500,
       );
     }
   }
-  
-  
+
   // get all company jobs
   async listJobs(userId: number): Promise<Job[]> {
     try {
@@ -61,7 +65,7 @@ export class JobService {
         include: { company: true },
       });
       if (!user?.company) throw new ForbiddenException('Company not found');
-      
+
       return this.prisma.job.findMany({
         where: { companyId: user.company.id },
         orderBy: { createdAt: 'desc' },
@@ -69,6 +73,20 @@ export class JobService {
     } catch (err) {
       console.error('Job error:', err);
       throw new HttpException('Something went wrong', 500);
+    }
+  }
+
+  // get all jobs
+  async listAllJobs(): Promise<Job[]> {
+    try {
+      return this.prisma.job.findMany({
+        where: {},
+        orderBy: { createdAt: 'desc' },
+        include: { company: true },
+      });
+    } catch (error) {
+      console.error('Job error:', error);
+      throw new HttpException('Something went wrong while fetching jobs', 500);
     }
   }
 
@@ -108,6 +126,7 @@ export class JobService {
         data: {
           title: dto.title,
           description: dto.description,
+          salary: dto.salary,
           location: dto.location,
         },
       });

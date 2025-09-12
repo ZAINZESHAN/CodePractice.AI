@@ -26,7 +26,7 @@ interface AuthRequest extends Request {
 export class JobApplicationController {
   constructor(private jobAppService: JobApplicationService) {}
 
-  // ✅ STUDENT: Apply for a job
+  // STUDENT: Apply for a job
   @Post('apply')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.STUDENT)
@@ -34,7 +34,7 @@ export class JobApplicationController {
     return this.jobAppService.applyJob(req.user.id, body);
   }
 
-  // ✅ STUDENT: Get my applications
+  // STUDENT: Get my applications
   @Get('my')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.STUDENT)
@@ -42,7 +42,7 @@ export class JobApplicationController {
     return this.jobAppService.getMyApplications(req.user.id);
   }
 
-  // ✅ COMPANY_ROOT & COMPANY_USER: Get applicants for job
+  // COMPANY_ROOT & COMPANY_USER: Get applicants for job
   @Get('job/:id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.COMPANY_ROOT, Role.COMPANY_USER)
@@ -54,7 +54,7 @@ export class JobApplicationController {
     );
   }
 
-  // ✅ COMPANY_ROOT & COMPANY_USER: Update applicant status
+  // COMPANY_ROOT & COMPANY_USER: Update applicant status
   @Patch(':id/status')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.COMPANY_ROOT, Role.COMPANY_USER)

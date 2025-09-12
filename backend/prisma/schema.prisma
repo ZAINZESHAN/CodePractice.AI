@@ -42,6 +42,7 @@ model Job {
   id             Int              @id @default(autoincrement())
   title          String
   description    String
+  salary         Int      @default(0)
   location       String?
   companyId      Int
   company        Company          @relation(fields: [companyId], references: [id])

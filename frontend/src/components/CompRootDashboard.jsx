@@ -10,8 +10,8 @@ import Link from "next/link";
 import React from "react";
 import job_img from "../assets/job-img.png";
 import Image from "next/image";
-import ListAllJobs from "./ListAllJobs";
 import CompUserList from "./CompUserList";
+import ListAllCompanyJobs from "./ListAllCompanyJobs";
 
 const CompRootDashboard = () => {
   const steps = [
@@ -43,7 +43,7 @@ const CompRootDashboard = () => {
     },
     {
       title: "Manage Jobs",
-      path: "/routes/manage-jobs",
+      path: "/routes/managecompany-jobs",
       icon: <UnorderedListOutlined className="text-2xl text-[#003A70]" />,
     },
     {
@@ -53,7 +53,7 @@ const CompRootDashboard = () => {
     },
     {
       title: "Manage Users",
-      path: "/routes/manage-users",
+      path: "/routes/managecompany-users",
       icon: <TeamOutlined className="text-2xl text-[#003A70]" />,
     },
   ];
@@ -155,7 +155,7 @@ const CompRootDashboard = () => {
         <h2 className="text-[28px] font-bold text-[#003A70] mb-6"  style={{fontWeight: "600"}}>
           Recent Jobs
         </h2>
-        <ListAllJobs />
+        <ListAllCompanyJobs />
       </div>
     </div>
   );

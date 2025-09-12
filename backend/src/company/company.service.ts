@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
-import { CompanyStatus } from '@prisma/client';
 
 @Injectable()
 export class CompanyService {
@@ -20,9 +19,9 @@ export class CompanyService {
   }
 
   // Get all companies (admin)
-  async findAll(status?: CompanyStatus) {
+  async findAll() {
     return this.prisma.company.findMany({
-      where: status ? { status } : {},
+      where: { },
     });
   }
 

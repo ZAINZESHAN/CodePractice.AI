@@ -5,15 +5,18 @@ import { Input, Button, Card, message } from "antd";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const { TextArea } = Input;
 
 const JobPost = () => {
   const { token } = useAuth(); // auth se token nikalna
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
   const [job, setJob] = useState({
     title: "",
     description: "",
+    salary: "",
     location: "",
   });
 
@@ -22,7 +25,7 @@ const JobPost = () => {
   };
 
   const handleSubmit = async () => {
-    if (!job.title || !job.description || !job.location) {
+    if (!job.title || !job.description || !job.location || !job.salary) {
       return toast.error("Please fill all fields");
     }
 
@@ -30,14 +33,14 @@ const JobPost = () => {
       setLoading(true);
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/job/create`,
-        job,
+        { ...job, salary: Number(job.salary) },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (res.data?.id) {
         toast.success("Job posted successfully!");
-        setJob({ title: "", description: "", location: "" });
-        window.location.href = "/routes/comproot-dashboard";
+        setJob({ title: "", description: "", location: "", salary: "" });
+        void router.push("/routes/comproot-dashboard");
       } else {
         toast.warning("Job created but no response data received!");
       }
@@ -86,6 +89,21 @@ const JobPost = () => {
               placeholder="Enter job description"
               rows={5}
               className="border-gray-300"
+            />
+          </div>
+
+          {/* Job Salary */}
+          <div className="flex flex-col">
+            <label className="text-sm font-medium text-gray-700 mb-1">
+              Job Salary
+            </label>
+            <Input
+              type="number"
+              name="salary"
+              value={job.salary}
+              onChange={handleChange}
+              placeholder="Enter job salary"
+              className="h-[45px] border-gray-300"
             />
           </div>
 

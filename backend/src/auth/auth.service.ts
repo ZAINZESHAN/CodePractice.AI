@@ -104,7 +104,6 @@ export class AuthService {
             description: dto.description,
             website: dto.website,
             location: dto.location,
-            status: 'PENDING',
           },
         },
       },

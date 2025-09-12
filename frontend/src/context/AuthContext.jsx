@@ -44,7 +44,6 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("token", jwtToken);
     localStorage.setItem("role", userData.role);
 
-    console.log(companyId)
     if (companyId) {
       localStorage.setItem("companyId", companyId); // ✅ ab sahi store hoga
     }

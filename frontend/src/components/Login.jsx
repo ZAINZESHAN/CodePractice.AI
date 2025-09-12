@@ -24,7 +24,7 @@ const Login = () => {
                 router.push("/routes/student-dashboard");
                 break;
             case "COMPANY_ROOT":
-                router.push("/module/pages/company-root/dashboard");
+                router.push("/routes/comproot-dashboard");
                 break;
             case "COMPANY_USER":
                 router.push("/module/pages/company-user/dashboard");
