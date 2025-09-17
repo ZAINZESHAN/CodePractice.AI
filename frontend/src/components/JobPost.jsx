@@ -34,10 +34,10 @@ const JobPost = () => {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/job/create`,
         { ...job, salary: Number(job.salary) },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
 
-      console.log(res)
+      console.log(res);
 
       if (res.data?.id) {
         toast.success("Job posted successfully!");

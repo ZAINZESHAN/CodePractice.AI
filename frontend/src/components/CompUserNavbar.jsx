@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const CompUserNavbar = () => {
-  return (
-    <div>CompUserNavbar</div>
-  )
-}
+  return <div>CompUserNavbar</div>;
+};
 
-export default CompUserNavbar
+export default CompUserNavbar;

@@ -26,7 +26,7 @@ const Contact = () => {
           from_email: form.email,
           message: form.message,
         },
-        "c9JOSnQdN_jBACtrO"
+        "c9JOSnQdN_jBACtrO",
       )
       .then(
         () => {
@@ -37,7 +37,7 @@ const Contact = () => {
         () => {
           setLoading(false);
           toast.error("Failed to send message. Please try again.");
-        }
+        },
       );
   };
 
@@ -47,12 +47,18 @@ const Contact = () => {
         Contact Us
       </h1>
       <p className="text-center text-gray-600 text-sm sm:text-base mb-12">
-        Got a question, feedback, or need support? Fill out the form below and we'll get back to you as soon as possible.
+        Got a question, feedback, or need support? Fill out the form below and
+        we'll get back to you as soon as possible.
       </p>
 
-      <form onSubmit={handleSubmit} className="space-y-6 bg-white p-8 rounded-xl shadow-lg">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-6 bg-white p-8 rounded-xl shadow-lg"
+      >
         <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700">Your Name</label>
+          <label className="block mb-2 text-sm font-medium text-gray-700">
+            Your Name
+          </label>
           <Input
             name="name"
             placeholder="Enter your name"
@@ -64,7 +70,9 @@ const Contact = () => {
         </div>
 
         <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700">Your Email</label>
+          <label className="block mb-2 text-sm font-medium text-gray-700">
+            Your Email
+          </label>
           <Input
             name="email"
             type="email"
@@ -77,7 +85,9 @@ const Contact = () => {
         </div>
 
         <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700">Your Message</label>
+          <label className="block mb-2 text-sm font-medium text-gray-700">
+            Your Message
+          </label>
           <Input.TextArea
             name="message"
             placeholder="Write your message here..."
@@ -93,7 +103,7 @@ const Contact = () => {
             type="primary"
             htmlType="submit"
             loading={loading}
-            style={{background: "#003A70"}}
+            style={{ background: "#003A70" }}
             className="bg-[#003A70] border-none hover:bg-[#002C55] px-10 py-3 rounded-md text-white font-semibold transition-all duration-300"
           >
             Send Message

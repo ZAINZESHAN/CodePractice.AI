@@ -69,7 +69,7 @@ const CompRootDashboard = () => {
           </h1>
           <Link href={"/routes/job-posting"}>
             <button className="mt-6 bg-[#003A70] cursor-pointer md:w-[180px] h-[50px] rounded-md font-bold transition-all duration-300 hover:scale-105">
-              <span className="text-white">Post a job</span> 
+              <span className="text-white">Post a job</span>
             </button>
           </Link>
         </div>
@@ -101,7 +101,10 @@ const CompRootDashboard = () => {
 
       {/* Quick Actions */}
       <div className="w-full lg:w-[80%] mt-12 px-6 lg:px-0">
-        <h2 className="text-[28px] font-bold text-[#003A70] mb-6" style={{ fontWeight: "600" }}>
+        <h2
+          className="text-[28px] font-bold text-[#003A70] mb-6"
+          style={{ fontWeight: "600" }}
+        >
           Quick Actions
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
@@ -145,7 +148,10 @@ const CompRootDashboard = () => {
       </div>
 
       <div className="w-full lg:w-[80%] mt-16 px-6 lg:px-0">
-        <h2 className="text-[28px] font-bold text-[#003A70] mb-6" style={{ fontWeight: "600" }}>
+        <h2
+          className="text-[28px] font-bold text-[#003A70] mb-6"
+          style={{ fontWeight: "600" }}
+        >
           Company Employee
         </h2>
         <CompUserList />
@@ -153,17 +159,23 @@ const CompRootDashboard = () => {
 
       {/* Recent Jobs */}
       <div className="w-full lg:w-[80%] mt-16 px-6 lg:px-0">
-        <h2 className="text-[28px] font-bold text-[#003A70] mb-6" style={{ fontWeight: "600" }}>
+        <h2
+          className="text-[28px] font-bold text-[#003A70] mb-6"
+          style={{ fontWeight: "600" }}
+        >
           Recent Jobs
         </h2>
         <ListAllCompanyJobs />
       </div>
       {/* All Applicants */}
       <div className="w-full lg:w-[80%] mt-16 px-6 lg:px-0">
-        <h2 className="text-[28px] font-bold text-[#003A70] mb-6" style={{ fontWeight: "600" }}>
+        <h2
+          className="text-[28px] font-bold text-[#003A70] mb-6"
+          style={{ fontWeight: "600" }}
+        >
           All Applicants
         </h2>
-      <AllApplicants />
+        <AllApplicants />
       </div>
     </div>
   );

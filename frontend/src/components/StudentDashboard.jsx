@@ -84,7 +84,8 @@ const StudentDashboard = () => {
             <b>Find great places to work</b>
           </h1>
           <p className="w-[80%] text-gray-500 text-[15px] text-center md:text-[18px]">
-            Discover and manage your company profile, employees, and job postings.
+            Discover and manage your company profile, employees, and job
+            postings.
           </p>
           <div className="flex flex-col md:flex-row gap-3 w-[100%] mt-6">
             <Input

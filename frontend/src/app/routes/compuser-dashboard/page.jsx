@@ -1,14 +1,14 @@
-import CompUserDashboard from '@/components/CompUserDashboard'
-import CompUserNavbar from '@/components/CompUserNavbar'
-import ProtectedRoute from '@/components/ProtectedRoute'
-import React from 'react'
+import CompUserDashboard from "@/components/CompUserDashboard";
+import CompUserNavbar from "@/components/CompUserNavbar";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import React from "react";
 
 const CompUserDashboardPage = () => {
-    return (
-        <ProtectedRoute allowedRoles={['COMPANY_USER']}>
-            <CompUserDashboard />
-        </ProtectedRoute>
-    )
-}
+  return (
+    <ProtectedRoute allowedRoles={["COMPANY_USER"]}>
+      <CompUserDashboard />
+    </ProtectedRoute>
+  );
+};
 
-export default CompUserDashboardPage
+export default CompUserDashboardPage;

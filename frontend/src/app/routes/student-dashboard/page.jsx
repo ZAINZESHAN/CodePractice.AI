@@ -1,13 +1,13 @@
-import ProtectedRoute from '@/components/ProtectedRoute'
-import StudentDashboard from '@/components/StudentDashboard'
-import React from 'react'
+import ProtectedRoute from "@/components/ProtectedRoute";
+import StudentDashboard from "@/components/StudentDashboard";
+import React from "react";
 
 const StudentDashoardPage = () => {
-    return (
-        <ProtectedRoute allowedRoles={['STUDENT']}>
-            <StudentDashboard />
-        </ProtectedRoute>
-    )
-}
+  return (
+    <ProtectedRoute allowedRoles={["STUDENT"]}>
+      <StudentDashboard />
+    </ProtectedRoute>
+  );
+};
 
-export default StudentDashoardPage
+export default StudentDashoardPage;

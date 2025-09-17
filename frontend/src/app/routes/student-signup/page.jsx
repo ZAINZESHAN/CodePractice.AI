@@ -1,10 +1,8 @@
-import StudentAuth from '@/components/StudentAuth'
-import React from 'react'
+import StudentAuth from "@/components/StudentAuth";
+import React from "react";
 
 const StudentAuthPage = () => {
-  return (
-    <StudentAuth/>
-  )
-}
+  return <StudentAuth />;
+};
 
-export default StudentAuthPage
+export default StudentAuthPage;

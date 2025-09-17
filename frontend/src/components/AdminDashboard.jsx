@@ -41,7 +41,7 @@ const AdminDashboard = () => {
     try {
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/companies`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
       setCompanies(res.data);
     } catch (err) {
@@ -56,7 +56,7 @@ const AdminDashboard = () => {
     try {
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/job/all`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
       setJobs(res.data);
     } catch (err) {
@@ -71,7 +71,7 @@ const AdminDashboard = () => {
     try {
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/students`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
       setStudents(res.data);
     } catch (err) {
@@ -86,7 +86,7 @@ const AdminDashboard = () => {
     try {
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/company-users`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
       setCompanyUsers(res.data);
     } catch (err) {
@@ -111,7 +111,7 @@ const AdminDashboard = () => {
     try {
       await axios.delete(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/companies/${id}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
       toast.success("Company deleted successfully!");
       fetchCompanies();
@@ -124,7 +124,7 @@ const AdminDashboard = () => {
     try {
       await axios.delete(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/job/delete/${id}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
       toast.success("Job deleted successfully!");
       fetchJobs();
@@ -199,7 +199,10 @@ const AdminDashboard = () => {
   return (
     <Layout style={{ minHeight: "100vh" }}>
       {/* Top Header */}
-      <Header className="bg-white shadow-md flex items-center px-6 justify-between" style={{background: "white"}}>
+      <Header
+        className="bg-white shadow-md flex items-center px-6 justify-between"
+        style={{ background: "white" }}
+      >
         <h1 className="text-3xl font-bold text-[#003A70]">Admin Panel</h1>
 
         {/* Show menu button only on screens smaller than md */}

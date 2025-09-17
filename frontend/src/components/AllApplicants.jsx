@@ -1,12 +1,7 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import {
-  Card,
-  List,
-  Select,
-  Button,
-} from "antd";
+import { Card, List, Select, Button } from "antd";
 import {
   CalendarOutlined,
   MailOutlined,
@@ -49,14 +44,14 @@ const AllApplicant = () => {
       await axios.patch(
         `${BACKEND_URL}/applications/${appId}/status`,
         { status: newStatus },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
 
       toast.success("Status updated successfully!");
       setApplicants((prev) =>
         prev.map((app) =>
-          app.id === appId ? { ...app, status: newStatus } : app
-        )
+          app.id === appId ? { ...app, status: newStatus } : app,
+        ),
       );
     } catch (err) {
       toast.error("Failed to update status");
@@ -97,8 +92,7 @@ const AllApplicant = () => {
               }
             >
               <p className="text-gray-700 mb-1 flex items-center gap-2">
-                <MailOutlined className="text-[#003A70]" />{" "}
-                {app.student?.email}
+                <MailOutlined className="text-[#003A70]" /> {app.student?.email}
               </p>
 
               <p className="text-gray-700 mb-1">

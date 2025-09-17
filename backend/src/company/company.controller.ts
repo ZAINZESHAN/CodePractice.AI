@@ -60,4 +60,3 @@ export class CompanyController {
     return this.companyService.remove(id);
   }
 }
-  

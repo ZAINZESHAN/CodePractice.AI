@@ -36,13 +36,13 @@ const CompUserAuth = () => {
           headers: {
             Authorization: `Bearer ${token}`, // 👈 zaroori
           },
-        }
+        },
       );
 
       if (res.data.success) {
         toast.success(res.data.message || "Employee created successfully");
         form.resetFields();
-        router.push('/routes/compuser-dashboard')
+        router.push("/routes/compuser-dashboard");
       }
     } catch (err) {
       toast.error(err.response?.data?.message || "Something went wrong!");

@@ -1,10 +1,8 @@
-import AllApplicant from '@/components/AllApplicants'
-import React from 'react'
+import AllApplicant from "@/components/AllApplicants";
+import React from "react";
 
 const AllApplicantsPage = () => {
-  return (
-    <AllApplicant/>
-  )
-}
+  return <AllApplicant />;
+};
 
-export default AllApplicantsPage
+export default AllApplicantsPage;

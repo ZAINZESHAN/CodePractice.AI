@@ -9,7 +9,10 @@ export class JobApplicationService {
   constructor(private prisma: PrismaService) {}
 
   // STUDENT: Apply for a job
-  async applyJob(studentId: number, dto: CreateJobApplicationDto): Promise<JobApplication> {
+  async applyJob(
+    studentId: number,
+    dto: CreateJobApplicationDto,
+  ): Promise<JobApplication> {
     const job = await this.prisma.job.findUnique({ where: { id: dto.jobId } });
     if (!job) throw new ForbiddenException('Job not found');
 
@@ -32,7 +35,11 @@ export class JobApplicationService {
   async getMyApplications(studentId: number): Promise<JobApplication[]> {
     return this.prisma.jobApplication.findMany({
       where: { studentId },
-      include: { job: { select: { id: true, title: true, company: true, location: true } } },
+      include: {
+        job: {
+          select: { id: true, title: true, company: true, location: true },
+        },
+      },
       orderBy: { createdAt: 'desc' },
     });
   }
@@ -42,7 +49,9 @@ export class JobApplicationService {
     return this.prisma.jobApplication.findMany({
       where: { job: { companyId } },
       include: {
-        student: { select: { id: true, name: true, email: true, resumeUrl: true } },
+        student: {
+          select: { id: true, name: true, email: true, resumeUrl: true },
+        },
         job: { select: { id: true, title: true, location: true } },
       },
       orderBy: { createdAt: 'desc' },
@@ -50,9 +59,13 @@ export class JobApplicationService {
   }
 
   // COMPANY: Get applicants for a specific job
-  async getApplicants(companyId: number, jobId: number): Promise<JobApplication[]> {
+  async getApplicants(
+    companyId: number,
+    jobId: number,
+  ): Promise<JobApplication[]> {
     const job = await this.prisma.job.findUnique({ where: { id: jobId } });
-    if (!job || job.companyId !== companyId) throw new ForbiddenException('Not authorized');
+    if (!job || job.companyId !== companyId)
+      throw new ForbiddenException('Not authorized');
 
     return this.prisma.jobApplication.findMany({
       where: { jobId },
@@ -61,12 +74,17 @@ export class JobApplicationService {
   }
 
   // COMPANY: Update applicant status
-  async updateStatus(companyId: number, appId: number, dto: UpdateJobApplicationDto) {
+  async updateStatus(
+    companyId: number,
+    appId: number,
+    dto: UpdateJobApplicationDto,
+  ) {
     const app = await this.prisma.jobApplication.findUnique({
       where: { id: appId },
       include: { job: true },
     });
-    if (!app || app.job.companyId !== companyId) throw new ForbiddenException('Not authorized');
+    if (!app || app.job.companyId !== companyId)
+      throw new ForbiddenException('Not authorized');
 
     return this.prisma.jobApplication.update({
       where: { id: appId },
@@ -80,7 +98,8 @@ export class JobApplicationService {
       where: { id: appId },
       include: { job: true },
     });
-    if (!app || app.job.companyId !== companyId) throw new ForbiddenException('Not authorized');
+    if (!app || app.job.companyId !== companyId)
+      throw new ForbiddenException('Not authorized');
 
     return this.prisma.jobApplication.delete({
       where: { id: appId },

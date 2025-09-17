@@ -1,10 +1,8 @@
-import CompUserAuth from '@/components/CompUserAuth'
-import React from 'react'
+import CompUserAuth from "@/components/CompUserAuth";
+import React from "react";
 
 const CompUserAuthPage = () => {
-    return (
-        <CompUserAuth />
-    )
-}
+  return <CompUserAuth />;
+};
 
-export default CompUserAuthPage
+export default CompUserAuthPage;

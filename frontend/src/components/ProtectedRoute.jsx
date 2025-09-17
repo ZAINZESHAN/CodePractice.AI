@@ -7,12 +7,14 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user, role, loading } = useAuth();
 
   // Convert allowedRoles to array & uppercase
-  const rolesArray = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles];
-  const allowed = rolesArray.map(r => r.toUpperCase());
+  const rolesArray = Array.isArray(allowedRoles)
+    ? allowedRoles
+    : [allowedRoles];
+  const allowed = rolesArray.map((r) => r.toUpperCase());
   const normalizedRole = role?.toString().toUpperCase();
 
   useEffect(() => {
-    if (!loading) { 
+    if (!loading) {
       if (!user) {
         window.location.href = "/routes/login";
       } else if (!allowed.includes(normalizedRole)) {

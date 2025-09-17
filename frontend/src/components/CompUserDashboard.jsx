@@ -35,10 +35,9 @@ const CompUserDashboard = () => {
 
       {/* Company Job Posts */}
       <div className="w-full lg:w-[80%] mt-16 px-6 lg:px-0">
-        <h2 className="text-[28px] font-bold text-[#003A70] mb-6">
-          Your Jobs
-        </h2>
-        <ListAllCompanyJobs showActions={false} /> {/* Only show jobs, no edit/delete */}
+        <h2 className="text-[28px] font-bold text-[#003A70] mb-6">Your Jobs</h2>
+        <ListAllCompanyJobs showActions={false} />{" "}
+        {/* Only show jobs, no edit/delete */}
       </div>
     </div>
   );

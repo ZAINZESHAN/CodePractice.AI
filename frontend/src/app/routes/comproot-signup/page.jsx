@@ -1,10 +1,8 @@
-import CompRootAuth from '@/components/CompRootAuth'
-import React from 'react'
+import CompRootAuth from "@/components/CompRootAuth";
+import React from "react";
 
 const CompRootAuthPage = () => {
-    return (
-        <CompRootAuth />
-    )
-}
+  return <CompRootAuth />;
+};
 
-export default CompRootAuthPage
+export default CompRootAuthPage;

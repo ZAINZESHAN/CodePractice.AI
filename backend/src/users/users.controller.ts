@@ -50,5 +50,4 @@ export class UsersController {
   async deleteCompanyUser(@Req() req: AuthRequest, @Param('id') id: string) {
     return this.usersService.deleteCompanyUser(Number(id), req.user);
   }
-
 }

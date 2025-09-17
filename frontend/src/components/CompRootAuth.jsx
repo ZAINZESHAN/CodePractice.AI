@@ -21,13 +21,16 @@ const CompRootAuth = () => {
   const handleSubmit = async (values) => {
     setLoading(true);
     try {
-      const res = await axios.post(`${BACKEND_URL}/auth/register-company-root`, values);
+      const res = await axios.post(
+        `${BACKEND_URL}/auth/register-company-root`,
+        values,
+      );
       if (res.data.success) {
-        login(res.data.user, res.data.token)
+        login(res.data.user, res.data.token);
         toast.success(res.data.message);
         form.resetFields(); // <- Reset form fields after successful signup
-        router.push('/routes/comproot-dashboard')
-      } 
+        router.push("/routes/comproot-dashboard");
+      }
     } catch (err) {
       toast.error(err.response?.data?.message || "Something went wrong!");
     } finally {
@@ -74,7 +77,9 @@ const CompRootAuth = () => {
                 <Form.Item
                   name="name"
                   label={<Text style={{ color: "#003A70" }}>Name</Text>}
-                  rules={[{ required: true, message: "Please enter your name" }]}
+                  rules={[
+                    { required: true, message: "Please enter your name" },
+                  ]}
                 >
                   <Input placeholder="Your Name" />
                 </Form.Item>
@@ -83,7 +88,9 @@ const CompRootAuth = () => {
                 <Form.Item
                   name="email"
                   label={<Text style={{ color: "#003A70" }}>Email</Text>}
-                  rules={[{ required: true, message: "Please enter your email" }]}
+                  rules={[
+                    { required: true, message: "Please enter your email" },
+                  ]}
                 >
                   <Input placeholder="Email" />
                 </Form.Item>
@@ -96,7 +103,9 @@ const CompRootAuth = () => {
                 <Form.Item
                   name="password"
                   label={<Text style={{ color: "#003A70" }}>Password</Text>}
-                  rules={[{ required: true, message: "Please enter a password" }]}
+                  rules={[
+                    { required: true, message: "Please enter a password" },
+                  ]}
                 >
                   <Input.Password placeholder="Password" />
                 </Form.Item>
@@ -105,7 +114,9 @@ const CompRootAuth = () => {
                 <Form.Item
                   name="companyName"
                   label={<Text style={{ color: "#003A70" }}>Company Name</Text>}
-                  rules={[{ required: true, message: "Please enter company name" }]}
+                  rules={[
+                    { required: true, message: "Please enter company name" },
+                  ]}
                 >
                   <Input placeholder="Company Name" />
                 </Form.Item>
@@ -141,7 +152,6 @@ const CompRootAuth = () => {
             </Form.Item>
           </>
 
-
           <Button
             type="primary"
             htmlType="submit"
@@ -161,7 +171,7 @@ const CompRootAuth = () => {
         <Text style={{ display: "block", marginTop: 15, textAlign: "center" }}>
           Already have an account?{" "}
           <Link
-            href={'/routes/login'}
+            href={"/routes/login"}
             style={{ color: "#003A70", fontWeight: 600, cursor: "pointer" }}
           >
             Login

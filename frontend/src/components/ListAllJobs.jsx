@@ -42,7 +42,7 @@ const ListAllJobs = ({ searchQuery = "" }) => {
   const filteredJobs = jobs.filter(
     (job) =>
       job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      job.company?.name.toLowerCase().includes(searchQuery.toLowerCase())
+      job.company?.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const handleApply = (job) => {
@@ -61,7 +61,7 @@ const ListAllJobs = ({ searchQuery = "" }) => {
 
     const res = await fetch(
       `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`,
-      { method: "POST", body: data }
+      { method: "POST", body: data },
     );
     const json = await res.json();
     if (!res.ok)
@@ -84,7 +84,7 @@ const ListAllJobs = ({ searchQuery = "" }) => {
           phoneNumber: values.number.toString(),
           resumeUrl,
         },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
 
       updateUser({ resumeUrl });

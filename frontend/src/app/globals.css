@@ -5,11 +5,11 @@ body {
 }
 
 .custom-search-input {
-  border: 1px solid rgb(220, 219, 219) !important; 
+  border: 1px solid rgb(220, 219, 219) !important;
   border-bottom: 2px solid #ccc;
 }
 
 .custom-search-input:focus,
 .custom-search-input:focus-within {
-  border-bottom: 3px solid #003A70 !important;
+  border-bottom: 3px solid #003a70 !important;
 }

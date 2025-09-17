@@ -2,7 +2,14 @@ import React from "react";
 import hero_img from "../assets/system2.png";
 import Image from "next/image";
 import { Button, Card } from "antd";
-import { CheckCircleOutlined, FileTextOutlined, SearchOutlined, SolutionOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  CheckCircleOutlined,
+  FileTextOutlined,
+  SearchOutlined,
+  SolutionOutlined,
+  TeamOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import Link from "next/link";
 
 const Home = () => {
@@ -23,9 +30,11 @@ const Home = () => {
       title: "Interviews & Offers",
       description:
         "Get shortlisted for interviews, connect with recruiters, and receive job offers seamlessly on the platform.",
-      icon: <CheckCircleOutlined style={{ fontSize: "32px", color: "#002C55" }} />,
+      icon: (
+        <CheckCircleOutlined style={{ fontSize: "32px", color: "#002C55" }} />
+      ),
     },
-  ]
+  ];
 
   const features = [
     {
@@ -52,19 +61,18 @@ const Home = () => {
     <div>
       {/* Hero Section */}
       <div className="w-full h-[50vh] relative overflow-hidden">
-        <Image
-          className="w-full h-full"
-          src={hero_img}
-          alt="Hero"
-        />
+        <Image className="w-full h-full" src={hero_img} alt="Hero" />
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="absolute px-6 md:px-10 text-center inset-0 flex flex-col md-w-[50%] items-center justify-center">
-          <h1 className="text-white text-[28px] md:text-[38px]"><b>Campuss Recruitment System</b></h1>
+          <h1 className="text-white text-[28px] md:text-[38px]">
+            <b>Campuss Recruitment System</b>
+          </h1>
           <p className="text-white text-[15px] md:text-[18px] mb-6">
-            A bridge between talented students and top companies sign up to start your journey.
+            A bridge between talented students and top companies sign up to
+            start your journey.
           </p>
           <div className="flex gap-3 pt-3">
-            <Link href={'/routes/student-signup'}>
+            <Link href={"/routes/student-signup"}>
               <Button
                 type="primary"
                 className="transition-all duration-300 hover:scale-105 hover:border-white"
@@ -79,7 +87,7 @@ const Home = () => {
               </Button>
             </Link>
 
-            <Link href={'/routes/comproot-signup'}>
+            <Link href={"/routes/comproot-signup"}>
               <Button
                 type="default"
                 className="font-bold px-6 py-2 transition-all duration-300 hover:scale-105 hover:border-[#003A70]"
@@ -154,7 +162,7 @@ const Home = () => {
 
         <div className="flex justify-center gap-4 flex-wrap">
           {/* Student Button */}
-          <Link href={'/routes/student-signup'}>
+          <Link href={"/routes/student-signup"}>
             <Button
               type="primary"
               className="font-bold transition-all duration-300 hover:scale-105"
@@ -174,7 +182,7 @@ const Home = () => {
           </Link>
 
           {/* Company Button */}
-          <Link href={'/routes/comproot-signup'}>
+          <Link href={"/routes/comproot-signup"}>
             <Button
               type="default"
               className="font-bold transition-all duration-300 hover:scale-105"

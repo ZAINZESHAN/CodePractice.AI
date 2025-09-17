@@ -77,7 +77,6 @@ export class JobApplicationController {
       body,
     );
   }
-  
 
   // COMPANY: Delete applicant
   @Delete(':id')

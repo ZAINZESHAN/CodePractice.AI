@@ -1,10 +1,8 @@
-import StudentProfile from '@/components/StudentProfile'
-import React from 'react'
+import StudentProfile from "@/components/StudentProfile";
+import React from "react";
 
 const StudentProfilePage = () => {
-    return (
-        <StudentProfile />
-    )
-}
+  return <StudentProfile />;
+};
 
-export default StudentProfilePage
+export default StudentProfilePage;

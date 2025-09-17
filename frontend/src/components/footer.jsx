@@ -6,7 +6,9 @@ const Footer = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 sm:px-[5vw] md:px-[7vw] lg:px-[4vw]">
         {/* About Section */}
         <div>
-          <h3 className="text-lg font-semibold mb-4">Campus Recruitment System</h3>
+          <h3 className="text-lg font-semibold mb-4">
+            Campus Recruitment System
+          </h3>
           <p className="text-sm text-gray-300 leading-6">
             Helping students and companies connect seamlessly for better career
             opportunities and hiring experiences.
@@ -23,12 +25,18 @@ const Footer = () => {
               </Link>
             </li>
             <li>
-              <Link href="/about" className="hover:text-white transition-colors">
+              <Link
+                href="/about"
+                className="hover:text-white transition-colors"
+              >
                 About
               </Link>
             </li>
             <li>
-              <Link href="/contact" className="hover:text-white transition-colors">
+              <Link
+                href="/contact"
+                className="hover:text-white transition-colors"
+              >
                 Contact
               </Link>
             </li>
@@ -38,14 +46,17 @@ const Footer = () => {
         {/* Contact Section */}
         <div>
           <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
-          <p className="text-sm text-gray-300">Email: support@campusrecruit.com</p>
+          <p className="text-sm text-gray-300">
+            Email: support@campusrecruit.com
+          </p>
           <p className="text-sm text-gray-300">Phone: +92 300 1234567</p>
         </div>
       </div>
 
       {/* Bottom Bar */}
       <div className="border-t border-gray-700 mt-2 pt-4 text-center text-sm text-gray-400">
-        © {new Date().getFullYear()} Campus Recruitment System. All rights reserved.
+        © {new Date().getFullYear()} Campus Recruitment System. All rights
+        reserved.
       </div>
     </footer>
   );

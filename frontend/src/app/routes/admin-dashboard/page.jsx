@@ -1,13 +1,13 @@
-import AdminDashboard from '@/components/AdminDashboard'
-import ProtectedRoute from '@/components/ProtectedRoute'
-import React from 'react'
+import AdminDashboard from "@/components/AdminDashboard";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import React from "react";
 
 const AdminDashboardPage = () => {
-    return (
-        <ProtectedRoute allowedRoles={['ADMIN']}>
-            <AdminDashboard />
-        </ProtectedRoute>
-    )
-}
+  return (
+    <ProtectedRoute allowedRoles={["ADMIN"]}>
+      <AdminDashboard />
+    </ProtectedRoute>
+  );
+};
 
-export default AdminDashboardPage
+export default AdminDashboardPage;

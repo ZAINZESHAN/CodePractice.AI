@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import React, { useEffect, useState } from "react";
 import {
@@ -53,7 +53,11 @@ const StudentProfile = () => {
       <Card className="w-full shadow-lg rounded-2xl border border-gray-200">
         <Row gutter={[24, 24]}>
           {/* ✅ Left Side: Avatar + Info */}
-          <Col xs={24} md={8} className="flex bg-gray-200 pt-20 flex-col text-center">
+          <Col
+            xs={24}
+            md={8}
+            className="flex bg-gray-200 pt-20 flex-col text-center"
+          >
             <Avatar
               size={120}
               src={user?.avatar || null}
@@ -92,7 +96,7 @@ const StudentProfile = () => {
                 icon={<FileTextOutlined />}
                 href={user.resumeUrl}
                 target="_blank"
-                style={{background: "#003A70"}}
+                style={{ background: "#003A70" }}
               >
                 View Resume
               </Button>
@@ -133,8 +137,8 @@ const StudentProfile = () => {
                           app.status === "PENDING"
                             ? "orange"
                             : app.status === "ACCEPTED"
-                            ? "green"
-                            : "red"
+                              ? "green"
+                              : "red"
                         }
                       >
                         {app.status}
