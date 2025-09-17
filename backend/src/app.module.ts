@@ -5,6 +5,7 @@ import { CompanyModule } from './company/company.module';
 import { JobModule } from './job/job.module';
 import { JobApplicationModule } from './job-application/job-application.module';
 import { MulterModule } from '@nestjs/platform-express';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { MulterModule } from '@nestjs/platform-express';
       dest: './uploads',
     }),
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule {}
