@@ -112,7 +112,7 @@ export class AuthService {
 
     return {
       success: true,
-      message: 'Company root registered successfully',
+      message: 'Company registered successfully',
       token: this.generateToken({
         id: user.id,
         email: user.email,

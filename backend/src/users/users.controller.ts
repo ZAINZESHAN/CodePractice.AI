@@ -38,7 +38,6 @@ export class UsersController {
   }
 
   // Admin can fetch all company users
-  // Company Root can only fetch users of *their own company*
   @Get('company-users')
   @Roles(Role.ADMIN, Role.COMPANY_ROOT)
   async getAllCompanyUsers(@Req() req: AuthRequest) {
@@ -52,10 +51,4 @@ export class UsersController {
     return this.usersService.deleteCompanyUser(Number(id), req.user);
   }
 
-  // Only Admin can fetch other admins
-  // @Get('admins')
-  // @Roles(Role.ADMIN)
-  // async getAllAdmin() {
-  //   return this.usersService.getAllAdmins();
-  // }
 }

@@ -139,6 +139,7 @@ export class JobService {
   async deleteJobById(userId: number, jobId: number): Promise<Job> {
     try {
       const job = await this.getJobById(userId, jobId);
+      console.log(job)
       return this.prisma.job.delete({
         where: { id: job.id },
       });

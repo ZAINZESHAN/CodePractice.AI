@@ -35,7 +35,7 @@ model Company {
   users       User[]   @relation("CompanyUsers")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  jobs        Job[]
+  jobs        Job[]   
 }
 
 model Job {
@@ -45,11 +45,12 @@ model Job {
   salary         Int              @default(0)
   location       String?
   companyId      Int
-  company        Company          @relation(fields: [companyId], references: [id])
+  company        Company          @relation(fields: [companyId], references: [id], onDelete: Cascade) // <-- add cascade here
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   JobApplication JobApplication[]
 }
+
 
 enum Role {
   ADMIN

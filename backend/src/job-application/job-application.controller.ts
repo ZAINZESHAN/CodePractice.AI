@@ -7,6 +7,7 @@ import {
   Post,
   Req,
   UseGuards,
+  Delete,
 } from '@nestjs/common';
 import { JobApplicationService } from './job-application.service';
 import { CreateJobApplicationDto } from './dto/create-job-application.dto';
@@ -26,7 +27,7 @@ interface AuthRequest extends Request {
 export class JobApplicationController {
   constructor(private jobAppService: JobApplicationService) {}
 
-  // STUDENT: Apply for a jobx`
+  // STUDENT: Apply for a job
   @Post('apply')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.STUDENT)
@@ -42,6 +43,7 @@ export class JobApplicationController {
     return this.jobAppService.getMyApplications(req.user.id);
   }
 
+  // COMPANY: Get all applicants for the company
   @Get('company/all')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.COMPANY_ROOT, Role.COMPANY_USER)
@@ -49,19 +51,18 @@ export class JobApplicationController {
     return this.jobAppService.getAllApplicants(Number(req.user.companyId));
   }
 
-  // COMPANY_ROOT & COMPANY_USER: Get applicants for job
+  // COMPANY: Get applicants for a specific job
   @Get('job/:id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.COMPANY_ROOT, Role.COMPANY_USER)
   getApplicants(@Req() req: AuthRequest, @Param('id') jobId: string) {
     return this.jobAppService.getApplicants(
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       Number(req.user.companyId),
       Number(jobId),
     );
   }
 
-  // COMPANY_ROOT & COMPANY_USER: Update applicant status
+  // COMPANY: Update applicant status
   @Patch(':id/status')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.COMPANY_ROOT, Role.COMPANY_USER)
@@ -71,10 +72,21 @@ export class JobApplicationController {
     @Body() body: UpdateJobApplicationDto,
   ) {
     return this.jobAppService.updateStatus(
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       Number(req.user.companyId),
       Number(appId),
       body,
+    );
+  }
+  
+
+  // COMPANY: Delete applicant
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.COMPANY_ROOT, Role.COMPANY_USER)
+  deleteApplicant(@Req() req: AuthRequest, @Param('id') appId: string) {
+    return this.jobAppService.deleteApplicant(
+      Number(req.user.companyId),
+      Number(appId),
     );
   }
 }

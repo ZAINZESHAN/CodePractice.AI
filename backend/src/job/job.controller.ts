@@ -28,7 +28,7 @@ export class JobController {
 
   @Post('create')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.COMPANY_ROOT)
+  @Roles(Role.COMPANY_ROOT, Role.COMPANY_USER)
   createJob(@Req() req: AuthRequest, @Body() body: CreateJobDto) {
     return this.jobService.createJob(req.user.id, body);
   }
@@ -40,7 +40,7 @@ export class JobController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  @Roles(Role.COMPANY_ROOT)
+  @Roles(Role.COMPANY_ROOT, Role.ADMIN)
   listJobs(@Req() req: AuthRequest) {
     return this.jobService.listJobs(req.user.id);
   }
@@ -52,7 +52,7 @@ export class JobController {
 
   @Patch('update/:id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.COMPANY_ROOT)
+  @Roles(Role.COMPANY_ROOT, Role.ADMIN)
   updateJObById(
     @Req() req: AuthRequest,
     @Param('id') id: string,
@@ -63,7 +63,7 @@ export class JobController {
 
   @Delete('delete/:id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.COMPANY_ROOT)
+  @Roles(Role.ADMIN, Role.COMPANY_ROOT)
   deleteJobById(@Req() req: AuthRequest, @Param('id') id: string) {
     return this.jobService.deleteJobById(req.user.id, Number(id));
   }

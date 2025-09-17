@@ -53,18 +53,6 @@ export class CompanyController {
     return this.companyService.update(id, dto);
   }
 
-  // // Admin only: Approve / Reject company
-  // @Put(':id/status')
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.ADMIN)
-  // updateStatus(
-  //   @Param('id', ParseIntPipe) id: number,
-  //   @Body() dto: UpdateCompanyStatusDto,
-  // ) {
-  //   return this.companyService.updateStatus(id, dto);
-  // }
-
-  // Admin only: Delete company
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
@@ -72,3 +60,4 @@ export class CompanyController {
     return this.companyService.remove(id);
   }
 }
+  
