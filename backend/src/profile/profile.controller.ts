@@ -3,18 +3,18 @@ import {
   Controller,
   Get,
   Patch,
-  Post,
+  // Post,
   Req,
-  UploadedFile,
+  // UploadedFile,
   UseGuards,
-  UseInterceptors,
+  // UseInterceptors,
 } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { Request } from 'express';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { UpdateProfileDto } from './dto/update-profile.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { File as MulterFile } from 'multer';
+// import { FileInterceptor } from '@nestjs/platform-express';
+// import { File as MulterFile } from 'multer';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guards';
 import { RolesGuard } from 'src/guards/roles.guards';
 import { Roles } from 'src/auth/decorators/roles.decorator';
@@ -41,15 +41,15 @@ export class ProfileController {
   @Roles(Role.STUDENT, Role.COMPANY_ROOT, Role.COMPANY_USER, Role.ADMIN)
   updateProfile(@Req() req: AuthRequest, @Body() dto: UpdateProfileDto) {
     return this.profileService.updateProfile(req.user.id, dto);
-  } 
-
-  // Only STUDENT can upload resume
-  @Post('upload-resume')
-  @UseInterceptors(FileInterceptor('file'))
-  @Roles(Role.STUDENT)
-  uploadResume(@Req() req: AuthRequest, @UploadedFile() file: MulterFile) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    const resumeUrl = `/uploads/${file.filename}`;
-    return this.profileService.uploadResume(req.user.id, resumeUrl);
   }
+
+  // // Only STUDENT can upload resume
+  // @Post('upload-resume')
+  // @UseInterceptors(FileInterceptor('file'))
+  // @Roles(Role.STUDENT)
+  // uploadResume(@Req() req: AuthRequest, @UploadedFile() file: MulterFile) {
+  //   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  //   const resumeUrl = `/uploads/${file.filename}`;
+  //   return this.profileService.uploadResume(req.user.id, resumeUrl);
+  // }
 }

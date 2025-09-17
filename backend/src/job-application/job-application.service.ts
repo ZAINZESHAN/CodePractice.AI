@@ -16,9 +16,26 @@ export class JobApplicationService {
     const job = await this.prisma.job.findUnique({ where: { id: dto.jobId } });
     if (!job) throw new ForbiddenException('Job not found');
 
+    const student = await this.prisma.user.findUnique({
+      where: { id: studentId },
+    });
+    console.log('Student before update:', student);
+
+    await this.prisma.user.update({
+      where: { id: studentId },
+      data: { resumeUrl: dto.resumeUrl },
+    });
+
+    const updatedStudent = await this.prisma.user.findUnique({
+      where: { id: studentId },
+    });
+    console.log('Student after update:', updatedStudent);
+
     return this.prisma.jobApplication.create({
       data: {
         jobId: dto.jobId,
+        phoneNumber: dto.phoneNumber,
+        resumeUrl: dto.resumeUrl,
         studentId,
       },
     });
@@ -28,8 +45,44 @@ export class JobApplicationService {
   async getMyApplications(studentId: number): Promise<JobApplication[]> {
     return this.prisma.jobApplication.findMany({
       where: { studentId },
-      include: { job: true },
+      include: {
+        job: {
+          select: { id: true, title: true, company: true, location: true },
+        },
+      },
       orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  // JobApplicationService.ts
+
+  async getAllApplicants(companyId: number) {
+    return this.prisma.jobApplication.findMany({
+      where: {
+        job: {
+          companyId,
+        },
+      },
+      include: {
+        student: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            resumeUrl: true,
+          },
+        },
+        job: {
+          select: {
+            id: true,
+            title: true,
+            location: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
   }
 

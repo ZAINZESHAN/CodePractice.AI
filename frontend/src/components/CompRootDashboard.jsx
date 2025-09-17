@@ -12,6 +12,7 @@ import job_img from "../assets/job-img.png";
 import Image from "next/image";
 import CompUserList from "./CompUserList";
 import ListAllCompanyJobs from "./ListAllCompanyJobs";
+import AllApplicants from "./AllApplicants";
 
 const CompRootDashboard = () => {
   const steps = [
@@ -48,7 +49,7 @@ const CompRootDashboard = () => {
     },
     {
       title: "View Applications",
-      path: "/routes/applications",
+      path: "/routes/all-applicants",
       icon: <FileSearchOutlined className="text-2xl text-[#003A70]" />,
     },
     {
@@ -100,7 +101,7 @@ const CompRootDashboard = () => {
 
       {/* Quick Actions */}
       <div className="w-full lg:w-[80%] mt-12 px-6 lg:px-0">
-        <h2 className="text-[28px] font-bold text-[#003A70] mb-6"  style={{fontWeight: "600"}}>
+        <h2 className="text-[28px] font-bold text-[#003A70] mb-6" style={{ fontWeight: "600" }}>
           Quick Actions
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
@@ -144,7 +145,7 @@ const CompRootDashboard = () => {
       </div>
 
       <div className="w-full lg:w-[80%] mt-16 px-6 lg:px-0">
-        <h2 className="text-[28px] font-bold text-[#003A70] mb-6"  style={{fontWeight: "600"}}>
+        <h2 className="text-[28px] font-bold text-[#003A70] mb-6" style={{ fontWeight: "600" }}>
           Company Employee
         </h2>
         <CompUserList />
@@ -152,10 +153,17 @@ const CompRootDashboard = () => {
 
       {/* Recent Jobs */}
       <div className="w-full lg:w-[80%] mt-16 px-6 lg:px-0">
-        <h2 className="text-[28px] font-bold text-[#003A70] mb-6"  style={{fontWeight: "600"}}>
+        <h2 className="text-[28px] font-bold text-[#003A70] mb-6" style={{ fontWeight: "600" }}>
           Recent Jobs
         </h2>
         <ListAllCompanyJobs />
+      </div>
+      {/* All Applicants */}
+      <div className="w-full lg:w-[80%] mt-16 px-6 lg:px-0">
+        <h2 className="text-[28px] font-bold text-[#003A70] mb-6" style={{ fontWeight: "600" }}>
+          All Applicants
+        </h2>
+      <AllApplicants />
       </div>
     </div>
   );

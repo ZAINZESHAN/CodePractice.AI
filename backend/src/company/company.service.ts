@@ -21,7 +21,7 @@ export class CompanyService {
   // Get all companies (admin)
   async findAll() {
     return this.prisma.company.findMany({
-      where: { },
+      where: {},
     });
   }
 
@@ -50,7 +50,7 @@ export class CompanyService {
 
     return this.prisma.company.update({
       where: { id },
-      data: dto
+      data: dto,
     });
   }
 

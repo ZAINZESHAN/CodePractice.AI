@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/router";
 import { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext(null);
@@ -37,7 +36,6 @@ export const AuthProvider = ({ children }) => {
     setToken(jwtToken);
     setRole(userData.role);
 
-    // Yaha directly number milega
     const companyId = userData.companyId || null;
 
     localStorage.setItem("user", JSON.stringify(userData));
@@ -45,7 +43,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("role", userData.role);
 
     if (companyId) {
-      localStorage.setItem("companyId", companyId); // ✅ ab sahi store hoga
+      localStorage.setItem("companyId", companyId);
     }
   };
 
@@ -57,11 +55,22 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
     localStorage.removeItem("companyId");
-    window.location.href = ('/')
+    window.location.href = "/";
+  };
+
+  // ✅ New function to update user (without re-login)
+  const updateUser = (newUserData) => {
+    setUser((prev) => {
+      const updatedUser = { ...prev, ...newUserData };
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      return updatedUser;
+    });
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, role, loading, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, token, role, loading, login, logout, updateUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

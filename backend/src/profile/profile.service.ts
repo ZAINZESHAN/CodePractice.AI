@@ -13,12 +13,12 @@ export class ProfileService {
     });
   }
 
-  async uploadResume(userId: number, resumeUrl: string): Promise<any> {
-    return this.prisma.user.update({
-      where: { id: userId },
-      data: { resumeUrl },
-    });
-  }
+  // async uploadResume(userId: number, resumeUrl: string): Promise<any> {
+  //   return this.prisma.user.update({
+  //     where: { id: userId },
+  //     data: { resumeUrl },
+  //   });
+  // }
 
   async getProfile(userId: number) {
     return this.prisma.user.findUnique({

@@ -34,7 +34,7 @@ export class JobController {
   }
 
   @Get('all')
-  listAllJobs(){
+  listAllJobs() {
     return this.jobService.listAllJobs();
   }
 

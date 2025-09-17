@@ -21,20 +21,20 @@ model User {
   JobApplication JobApplication[]
   bio            String?
   skills         String?
-  resumeUrl      String? 
+  resumeUrl      String?
 }
 
 model Company {
-  id          Int           @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   name        String
   description String?
   website     String?
   location    String?
   rootId      Int?
-  root        User?         @relation("CompanyRoot", fields: [rootId], references: [id])
-  users       User[]        @relation("CompanyUsers")
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  root        User?    @relation("CompanyRoot", fields: [rootId], references: [id])
+  users       User[]   @relation("CompanyUsers")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   jobs        Job[]
 }
 
@@ -42,7 +42,7 @@ model Job {
   id             Int              @id @default(autoincrement())
   title          String
   description    String
-  salary         Int      @default(0)
+  salary         Int              @default(0)
   location       String?
   companyId      Int
   company        Company          @relation(fields: [companyId], references: [id])
@@ -59,12 +59,14 @@ enum Role {
 }
 
 model JobApplication {
-  id        Int               @id @default(autoincrement())
-  jobId     Int
-  studentId Int
-  status    ApplicationStatus @default(PENDING)
-  createdAt DateTime          @default(now())
-  updatedAt DateTime          @updatedAt
+  id          Int               @id @default(autoincrement())
+  jobId       Int
+  studentId   Int
+  status      ApplicationStatus @default(PENDING)
+  phoneNumber String
+  resumeUrl   String
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
 
   job     Job  @relation(fields: [jobId], references: [id])
   student User @relation(fields: [studentId], references: [id])

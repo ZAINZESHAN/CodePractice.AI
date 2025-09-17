@@ -49,7 +49,6 @@ const CompUserList = () => {
     }
   };
 
-  console.log(users);
   return (
     <div>
       <List

@@ -123,8 +123,23 @@ export class AuthService {
     };
   }
 
-  // Normal User Login
+  // Single Login
   async login({ email, password }: LoginDto) {
+    // Step 1: Check if it's admin login
+    if (
+      email === process.env.ADMIN_EMAIL &&
+      password === process.env.ADMIN_PASSWORD
+    ) {
+      const token = this.generateToken({ id: 0, email, role: Role.ADMIN });
+      return {
+        success: true,
+        message: 'Admin logged in successfully',
+        token,
+        user: { id: 0, email, role: Role.ADMIN, name: 'Super Admin' },
+      };
+    }
+
+    // Step 2: Normal User Login
     const user = await this.prisma.user.findUnique({
       where: { email },
       include: { company: true },
@@ -153,21 +168,51 @@ export class AuthService {
     };
   }
 
-  // Admin Login
-  loginAdmin({ email, password }: LoginDto) {
-    if (
-      email === process.env.ADMIN_EMAIL &&
-      password === process.env.ADMIN_PASSWORD
-    ) {
-      const token = this.generateToken({ id: 0, email, role: Role.ADMIN });
-      return {
-        message: 'Admin logged in successfully',
-        token,
-        user: { id: 0, email, role: Role.ADMIN, name: 'Super Admin' },
-      };
-    }
-    throw new UnauthorizedException('Invalid admin credentials');
-  }
+  // // Normal User Login
+  // async login({ email, password }: LoginDto) {
+  //   const user = await this.prisma.user.findUnique({
+  //     where: { email },
+  //     include: { company: true },
+  //   });
+  //   if (!user) throw new NotFoundException('User not found');
+
+  //   if (!user.password) {
+  //     throw new UnauthorizedException('Invalid credentials');
+  //   }
+
+  //   const isPasswordValid = await bcrypt.compare(password, user.password);
+  //   if (!isPasswordValid) {
+  //     throw new UnauthorizedException('Invalid credentials');
+  //   }
+
+  //   return {
+  //     success: true,
+  //     message: 'User logged in successfully',
+  //     token: this.generateToken({
+  //       id: user.id,
+  //       email: user.email,
+  //       role: user.role,
+  //       companyId: user.companyId || null,
+  //     }),
+  //     user,
+  //   };
+  // }
+
+  // // Admin Login
+  // loginAdmin({ email, password }: LoginDto) {
+  //   if (
+  //     email === process.env.ADMIN_EMAIL &&
+  //     password === process.env.ADMIN_PASSWORD
+  //   ) {
+  //     const token = this.generateToken({ id: 0, email, role: Role.ADMIN });
+  //     return {
+  //       message: 'Admin logged in successfully',
+  //       token,
+  //       user: { id: 0, email, role: Role.ADMIN, name: 'Super Admin' },
+  //     };
+  //   }
+  //   throw new UnauthorizedException('Invalid admin credentials');
+  // }
 
   // Company User Register
   async createCompanyUser(dto: CreateCompanyUserDto) {
@@ -201,7 +246,7 @@ export class AuthService {
         id: user.id,
         email: user.email,
         role: user.role,
-        companyId: user.companyId, 
+        companyId: user.companyId,
       }),
       user,
     };

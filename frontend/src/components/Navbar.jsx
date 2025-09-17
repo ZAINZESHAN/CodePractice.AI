@@ -52,7 +52,7 @@ const Navbar = () => {
     ? [
       {
         key: "profile",
-        label: <Link href="/profile">Profile</Link>,
+        label: <Link href="/routes/student-profile">Profile</Link>,
         icon: <ProfileOutlined />,
       },
       {

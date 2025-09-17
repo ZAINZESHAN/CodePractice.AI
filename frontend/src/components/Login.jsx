@@ -27,10 +27,10 @@ const Login = () => {
                 router.push("/routes/comproot-dashboard");
                 break;
             case "COMPANY_USER":
-                router.push("/module/pages/company-user/dashboard");
+                router.push("/routes/compuser-dashboard");
                 break;
             case "ADMIN":
-                router.push("/module/pages/admin/dashboard");
+                router.push("/routes/admin-dashboard");
                 break;
             default:
                 router.push("/");
