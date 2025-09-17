@@ -37,6 +37,8 @@ const JobPost = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
+      console.log(res)
+
       if (res.data?.id) {
         toast.success("Job posted successfully!");
         setJob({ title: "", description: "", location: "", salary: "" });

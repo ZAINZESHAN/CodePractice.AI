@@ -69,7 +69,7 @@ const CompRootDashboard = () => {
           </h1>
           <Link href={"/routes/job-posting"}>
             <button className="mt-6 bg-[#003A70] cursor-pointer md:w-[180px] h-[50px] rounded-md font-bold transition-all duration-300 hover:scale-105">
-              Post a job
+              <span className="text-white">Post a job</span> 
             </button>
           </Link>
         </div>

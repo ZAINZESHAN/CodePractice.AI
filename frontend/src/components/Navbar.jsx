@@ -49,35 +49,47 @@ const Navbar = () => {
 
   // ✅ User dropdown (auth state ke hisaab se)
   const dropdownItems = user
-    ? [
-      {
-        key: "profile",
-        label: <Link href="/routes/student-profile">Profile</Link>,
-        icon: <ProfileOutlined />,
-      },
-      {
-        key: "logout",
-        label: <span onClick={logout}>Logout</span>,
-        icon: <LogoutOutlined />,
-      },
-    ]
+    ? user?.role === "STUDENT"
+      ? [
+          {
+            key: "profile",
+            label: <Link href="/routes/student-profile">Profile</Link>,
+            icon: <ProfileOutlined />,
+          },
+          {
+            key: "logout",
+            label: <span onClick={logout}>Logout</span>,
+            icon: <LogoutOutlined />,
+          },
+        ]
+      : [
+          {
+            key: "logout",
+            label: <span onClick={logout}>Logout</span>,
+            icon: <LogoutOutlined />,
+          },
+        ]
     : [
-      {
-        key: "login",
-        label: <Link href="/module/auth/login">Login</Link>,
-        icon: <LoginOutlined />,
-      },
-      {
-        key: "signup-student",
-        label: <Link href="/module/auth/signup-student">Signup as Student</Link>,
-        icon: <UserOutlined />,
-      },
-      {
-        key: "signup-company",
-        label: <Link href="/module/auth/signup-company">Signup as Company</Link>,
-        icon: <UserOutlined />,
-      },
-    ];
+        {
+          key: "login",
+          label: <Link href="/routes/login">Login</Link>,
+          icon: <LoginOutlined />,
+        },
+        {
+          key: "signup-student",
+          label: (
+            <Link href="/module/auth/signup-student">Signup as Student</Link>
+          ),
+          icon: <UserOutlined />,
+        },
+        {
+          key: "signup-company",
+          label: (
+            <Link href="/module/auth/signup-company">Signup as Company</Link>
+          ),
+          icon: <UserOutlined />,
+        },
+      ];
 
   return (
     <nav className="w-full bg-white shadow-md border-b border-gray-200 fixed top-0 left-0 z-50">
@@ -95,10 +107,11 @@ const Navbar = () => {
               <Link
                 key={item.key}
                 href={item.path}
-                className={`relative font-medium transition-colors duration-300 ${isActive
-                  ? "text-[#003A70]"
-                  : "text-gray-600 hover:text-[#003A70]"
-                  }`}
+                className={`relative font-medium transition-colors duration-300 ${
+                  isActive
+                    ? "text-[#003A70]"
+                    : "text-gray-600 hover:text-[#003A70]"
+                }`}
               >
                 {item.label}
                 {isActive && (
@@ -112,7 +125,11 @@ const Navbar = () => {
         {/* Right: User Dropdown + Mobile Toggle */}
         <div className="flex items-center space-x-3">
           {/* User Dropdown */}
-          <Dropdown menu={{ items: dropdownItems }} placement="bottomRight" arrow>
+          <Dropdown
+            menu={{ items: dropdownItems }}
+            placement="bottomRight"
+            arrow
+          >
             <div className="flex items-center space-x-2 cursor-pointer md:bg-gray-100 md:px-3 py-1 md:rounded-full md:border border-[#003A70] md:hover:shadow-md transition">
               <span className="hidden md:inline font-medium text-[#003A70]">
                 {user ? user.name : "Sign In"}
@@ -149,10 +166,11 @@ const Navbar = () => {
               <Link
                 key={item.key}
                 href={item.path}
-                className={`font-medium transition-colors duration-300 ${isActive
-                  ? "text-[#003A70]"
-                  : "text-gray-700 hover:text-[#003A70]"
-                  }`}
+                className={`font-medium transition-colors duration-300 ${
+                  isActive
+                    ? "text-[#003A70]"
+                    : "text-gray-700 hover:text-[#003A70]"
+                }`}
                 onClick={() => setDrawerOpen(false)}
               >
                 {item.label}

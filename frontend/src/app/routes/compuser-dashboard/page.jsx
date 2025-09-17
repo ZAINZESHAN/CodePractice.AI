@@ -5,7 +5,7 @@ import React from 'react'
 
 const CompUserDashboardPage = () => {
     return (
-        <ProtectedRoute allowedRoles={['COMPANY_ROOT']}>
+        <ProtectedRoute allowedRoles={['COMPANY_USER']}>
             <CompUserDashboard />
         </ProtectedRoute>
     )
