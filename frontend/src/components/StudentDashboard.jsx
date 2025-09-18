@@ -6,16 +6,24 @@ import {
   SearchOutlined,
   SolutionOutlined,
 } from "@ant-design/icons";
-import { Button, Card, Input } from "antd";
+import { Alert, Button, Card, Input } from "antd";
 import Image from "next/image";
 import job_img from "../assets/job-img.png";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ListAllJobs from "./ListAllJobs";
+import InterestModel from "./InterestModel";
 
 const StudentDashboard = () => {
   const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
-
+  const [showInterestModal, setShowInterestModal] = useState(
+    !user?.interest || !user?.location
+  );
+  const [profileComplete, setProfileComplete] = useState(
+    user?.interest && user?.location ? true : false
+  );
+  console.log(user.interest)
+  console.log(user.location)
   const dashboardSteps = [
     {
       title: "My Profile",
@@ -37,9 +45,35 @@ const StudentDashboard = () => {
     },
   ];
 
+  useEffect(() => {
+    if (showInterestModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [showInterestModal]);
+
   return (
     <div className="pt-2">
       {/* Hero Section */}
+
+      {showInterestModal && (
+        <div className="fixed inset-0 bg-white/40 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg max-w-xl w-full h-auto pt-12 p-8 relative z-50">
+            <InterestModel
+              onSave={() => {
+                setShowInterestModal(false);
+                setProfileComplete(true);
+              }}
+              onSkip={() => {
+                setShowInterestModal(false);
+                setProfileComplete(false);
+              }}
+            />
+          </div>
+        </div>
+      )}
+
       <div className="w-[100%] h-[100vh] md:h-[70vh] flex flex-col justify-between items-center">
         <div
           className="flex w-full h-[60%] md:h-[60%] rounded-md px-6 py-10 md:pl-6 flex-col md:flex-row justify-center"
@@ -56,7 +90,7 @@ const StudentDashboard = () => {
             <p className="text-gray-300">
               Welcome to Campass! Explore, Check, and Apply to your dream jobs.
             </p>
-            <Button
+            {/* <Button
               type="primary"
               className="transition-all md:w-[150px] duration-300 hover:scale-105 hover:border-white"
               style={{
@@ -69,7 +103,7 @@ const StudentDashboard = () => {
               }}
             >
               View Jobs
-            </Button>
+            </Button> */}
           </div>
           <div className="md:w-[50%] overflow-hidden flex justify-center md:justify-end items-center">
             <Image
@@ -121,8 +155,36 @@ const StudentDashboard = () => {
 
       {/* List all jobs for student */}
       <div className="py-20">
-        <ListAllJobs searchQuery={searchQuery} />
+        <ListAllJobs searchQuery={searchQuery}/>
       </div>
+
+      {!profileComplete && !showInterestModal && (
+        <div
+          style={{
+            position: "fixed",
+            right: "20px",
+            bottom: "20px",
+            height: "100vh",
+            display: "flex",
+            alignItems: "flex-end",
+            zIndex: 9999,
+            cursor: "pointer"
+          }}
+          onClick={() => setShowInterestModal(true)}
+        >
+          <Alert
+            message="Complete your profile"
+            description="Add your interest and location to get personalized jobs."
+            type="warning"
+            showIcon
+            closable
+            style={{
+              width: "100%",
+              borderRadius: "8px",
+            }}
+          />
+        </div>
+      )}
 
       {/* Dashboard Cards Section */}
       <div className="w-full bg-white py-12">

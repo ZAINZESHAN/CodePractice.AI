@@ -52,7 +52,7 @@ const StudentProfile = () => {
     <div className="min-h-[70vh] bg-[#f5f9ff]">
       <Card className="w-full shadow-lg rounded-2xl border border-gray-200">
         <Row gutter={[24, 24]}>
-          {/* ✅ Left Side: Avatar + Info */}
+          {/* Left Side: Avatar + Info */}
           <Col
             xs={24}
             md={8}
@@ -79,7 +79,7 @@ const StudentProfile = () => {
             </div>
           </Col>
 
-          {/* ✅ Right Side: About + Resume + Applications */}
+          {/* Right Side: About + Resume + Applications */}
           <Col xs={24} md={16} className=" pt-4">
             <Title level={4}>About Me</Title>
             <Paragraph>

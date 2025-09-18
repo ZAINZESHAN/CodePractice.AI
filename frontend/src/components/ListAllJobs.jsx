@@ -23,22 +23,31 @@ const ListAllJobs = ({ searchQuery = "" }) => {
   const [selectedJob, setSelectedJob] = useState(null);
   const [form] = Form.useForm();
 
-  const fetchJobs = async () => {
+  const fetchFilteredJobs = async () => {
+    setLoading(true);
     try {
-      const res = await axios.get(`${BACKEND_URL}/job/all`);
+      const res = await axios.get(`${BACKEND_URL}/job/filter`, {
+        params: {
+          interest: user.interest,
+          location: user.location,
+        },
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setJobs(res.data);
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchJobs();
-  }, []);
 
-  // ✅ Search filter (title + company name)
+  useEffect(() => {
+    if (!user) return; // wait for user
+    if (!user.interest || !user.location) return; // wait for profile complete
+    fetchFilteredJobs();
+  }, [user, token]);
+
   const filteredJobs = jobs.filter(
     (job) =>
       job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||

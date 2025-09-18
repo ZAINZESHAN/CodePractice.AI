@@ -42,14 +42,4 @@ export class ProfileController {
   updateProfile(@Req() req: AuthRequest, @Body() dto: UpdateProfileDto) {
     return this.profileService.updateProfile(req.user.id, dto);
   }
-
-  // // Only STUDENT can upload resume
-  // @Post('upload-resume')
-  // @UseInterceptors(FileInterceptor('file'))
-  // @Roles(Role.STUDENT)
-  // uploadResume(@Req() req: AuthRequest, @UploadedFile() file: MulterFile) {
-  //   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  //   const resumeUrl = `/uploads/${file.filename}`;
-  //   return this.profileService.uploadResume(req.user.id, resumeUrl);
-  // }
 }

@@ -9,16 +9,12 @@ export class ProfileService {
   async updateProfile(userId: number, dto: UpdateProfileDto): Promise<any> {
     return this.prisma.user.update({
       where: { id: userId },
-      data: { ...dto },
+      data: {
+        location: dto.location,
+        interest: dto.interest,
+      },
     });
   }
-
-  // async uploadResume(userId: number, resumeUrl: string): Promise<any> {
-  //   return this.prisma.user.update({
-  //     where: { id: userId },
-  //     data: { resumeUrl },
-  //   });
-  // }
 
   async getProfile(userId: number) {
     return this.prisma.user.findUnique({

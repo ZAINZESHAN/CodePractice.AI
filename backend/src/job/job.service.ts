@@ -51,13 +51,14 @@ export class JobService {
       if (err instanceof HttpException) throw err;
 
       throw new HttpException(
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
         err?.message || 'Something went wrong while creating job',
         500,
       );
     }
   }
 
-  // get all company jobs
+  // get all company jobs compnay root
   async listJobs(userId: number): Promise<Job[]> {
     try {
       const user = await this.prisma.user.findUnique({
@@ -76,7 +77,7 @@ export class JobService {
     }
   }
 
-  // get all jobs
+  // get all jobs for admin
   async listAllJobs(): Promise<Job[]> {
     try {
       return this.prisma.job.findMany({
@@ -145,6 +146,59 @@ export class JobService {
       });
     } catch {
       throw new HttpException('Something went wrong', 500);
+    }
+  }
+
+  // job.service.ts
+  async filterJobs(interest?: string, location?: string): Promise<any[]> {
+    console.log('Filter API called with:', { interest, location });
+
+    try {
+      const orConditions: any[] = [];
+
+      if (interest && interest.trim() !== '') {
+        orConditions.push(
+          { title: { contains: interest, mode: 'insensitive' } },
+          { description: { contains: interest, mode: 'insensitive' } },
+        );
+      }
+
+      if (location && location.trim() !== '') {
+        orConditions.push({
+          location: { contains: location, mode: 'insensitive' },
+        });
+      }
+
+      // Matched jobs: matches any condition
+      const matchedJobs = await this.prisma.job.findMany({
+        where: orConditions.length > 0 ? { OR: orConditions } : {},
+        include: { company: true },
+        orderBy: { createdAt: 'desc' },
+      });
+
+      // Non-matched jobs: does not match any condition
+      const nonMatchedJobs = await this.prisma.job.findMany({
+        where: orConditions.length > 0 ? { NOT: { OR: orConditions } } : {},
+        include: { company: true },
+        orderBy: { createdAt: 'desc' },
+      });
+
+      // Merge matched + non-matched and take top 5
+      const jobsToShow = [...matchedJobs, ...nonMatchedJobs].slice(0, 5);
+
+      console.log(
+        'Matched:',
+        matchedJobs.length,
+        'Non-matched:',
+        nonMatchedJobs.length,
+      );
+      console.log('Jobs to show:', jobsToShow.length);
+
+      return jobsToShow;
+    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      console.error('❌ Job filter error:', error.message || error);
+      throw new HttpException('Something went wrong while filtering jobs', 500);
     }
   }
 }

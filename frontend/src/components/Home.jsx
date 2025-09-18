@@ -65,7 +65,7 @@ const Home = () => {
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="absolute px-6 md:px-10 text-center inset-0 flex flex-col md-w-[50%] items-center justify-center">
           <h1 className="text-white text-[28px] md:text-[38px]">
-            <b>Campuss Recruitment System</b>
+            <b>Campus Recruitment System</b>
           </h1>
           <p className="text-white text-[15px] md:text-[18px] mb-6">
             A bridge between talented students and top companies sign up to

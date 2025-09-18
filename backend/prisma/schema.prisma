@@ -1,6 +1,7 @@
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  
 }
 
 generator client {
@@ -22,6 +23,8 @@ model User {
   bio            String?
   skills         String?
   resumeUrl      String?
+  interest       String?
+  location       String?
 }
 
 model Company {
@@ -35,7 +38,7 @@ model Company {
   users       User[]   @relation("CompanyUsers")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  jobs        Job[]   
+  jobs        Job[]
 }
 
 model Job {
@@ -50,7 +53,6 @@ model Job {
   updatedAt      DateTime         @updatedAt
   JobApplication JobApplication[]
 }
-
 
 enum Role {
   ADMIN

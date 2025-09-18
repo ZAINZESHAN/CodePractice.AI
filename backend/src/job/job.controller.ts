@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -25,6 +26,20 @@ interface AuthRequest extends Request {
 @Controller('job')
 export class JobController {
   constructor(private jobService: JobService) {}
+
+  @Get('/health')
+  getHello() {
+    return { message: 'API working' };
+  }
+
+  @Get('filter')
+  @UseGuards(JwtAuthGuard)
+  async filterJobs(
+    @Query('interest') interest?: string,
+    @Query('location') location?: string,
+  ) {
+    return this.jobService.filterJobs(interest, location);
+  }
 
   @Post('create')
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -46,6 +61,7 @@ export class JobController {
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   getJobById(@Req() req: AuthRequest, @Param('id') id: string) {
     return this.jobService.getJobById(req.user.id, Number(id));
   }

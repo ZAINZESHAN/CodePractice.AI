@@ -15,26 +15,26 @@ import ListAllCompanyJobs from "./ListAllCompanyJobs";
 import AllApplicants from "./AllApplicants";
 
 const CompRootDashboard = () => {
-  const steps = [
-    {
-      title: "Create your free account",
-      description:
-        "All you need is your email address to create an account and start building your job post.",
-      icon: <div className="text-[#003A70] text-xl font-bold mb-7">1</div>,
-    },
-    {
-      title: "Build your job post",
-      description:
-        "Then just add a title, description, and location to your job post, and you're ready to go.",
-      icon: <div className="text-[#003A70] text-xl font-bold mb-7">2</div>,
-    },
-    {
-      title: "Post Your Job",
-      description:
-        "After you post your job use our state of the art tools to help you find dream talent.",
-      icon: <div className="text-[#003A70] text-xl font-bold mb-7">3</div>,
-    },
-  ];
+  // const steps = [
+  //   {
+  //     title: "Create your free account",
+  //     description:
+  //       "All you need is your email address to create an account and start building your job post.",
+  //     icon: <div className="text-[#003A70] text-xl font-bold mb-7">1</div>,
+  //   },
+  //   {
+  //     title: "Build your job post",
+  //     description:
+  //       "Then just add a title, description, and location to your job post, and you're ready to go.",
+  //     icon: <div className="text-[#003A70] text-xl font-bold mb-7">2</div>,
+  //   },
+  //   {
+  //     title: "Post Your Job",
+  //     description:
+  //       "After you post your job use our state of the art tools to help you find dream talent.",
+  //     icon: <div className="text-[#003A70] text-xl font-bold mb-7">3</div>,
+  //   },
+  // ];
 
   const quickActions = [
     {
@@ -83,7 +83,7 @@ const CompRootDashboard = () => {
       </div>
 
       {/* Steps Section */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-20 px-6 lg:px-0 w-full lg:w-[80%]">
+      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-20 px-6 lg:px-0 w-full lg:w-[80%]">
         {steps.map((step, index) => (
           <Card
             key={index}
@@ -97,7 +97,7 @@ const CompRootDashboard = () => {
             <p className="text-gray-600">{step.description}</p>
           </Card>
         ))}
-      </div>
+      </div> */}
 
       {/* Quick Actions */}
       <div className="w-full lg:w-[80%] mt-12 px-6 lg:px-0">
@@ -112,7 +112,7 @@ const CompRootDashboard = () => {
             <Link key={index} href={action.path}>
               <Card
                 hoverable
-                className="flex flex-col items-center justify-center shadow-md hover:shadow-xl transition-all duration-300"
+                className="flex flex-col items-center text-center gap-2 justify-center shadow-md hover:shadow-xl transition-all duration-300"
                 style={{ borderRadius: "12px", height: "160px" }}
               >
                 {action.icon}

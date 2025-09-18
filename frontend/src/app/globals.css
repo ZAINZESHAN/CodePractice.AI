@@ -13,3 +13,14 @@ body {
 .custom-search-input:focus-within {
   border-bottom: 3px solid #003a70 !important;
 }
+
+.custom-steps .ant-steps-item-process .ant-steps-item-icon,
+.custom-steps .ant-steps-item-finish .ant-steps-item-icon {
+  background-color: #003A70 !important;
+  border-color: #003A70 !important;
+}
+
+.custom-steps .ant-steps-item-process .ant-steps-item-icon > .ant-steps-icon,
+.custom-steps .ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
+  color: #fff !important; /* number ko white kar diya */
+}

@@ -51,16 +51,16 @@ export class JobApplicationController {
     return this.jobAppService.getAllApplicants(Number(req.user.companyId));
   }
 
-  // COMPANY: Get applicants for a specific job
-  @Get('job/:id')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.COMPANY_ROOT, Role.COMPANY_USER)
-  getApplicants(@Req() req: AuthRequest, @Param('id') jobId: string) {
-    return this.jobAppService.getApplicants(
-      Number(req.user.companyId),
-      Number(jobId),
-    );
-  }
+  // // COMPANY: Get applicants for a specific job
+  // @Get('job/:id')
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.COMPANY_ROOT, Role.COMPANY_USER)
+  // getApplicants(@Req() req: AuthRequest, @Param('id') jobId: string) {
+  //   return this.jobAppService.getApplicants(
+  //     Number(req.user.companyId),
+  //     Number(jobId),
+  //   );
+  // }
 
   // COMPANY: Update applicant status
   @Patch(':id/status')

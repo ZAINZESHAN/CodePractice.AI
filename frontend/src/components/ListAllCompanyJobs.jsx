@@ -16,6 +16,7 @@ import {
   DeleteOutlined,
   EnvironmentOutlined,
   CalendarOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -93,6 +94,10 @@ const ListAllCompanyJobs = () => {
     }
   };
 
+  const handleApplicant = async () => {
+    console.log('me chal rha ho')
+  }
+
   return (
     <div>
       <List
@@ -136,6 +141,14 @@ const ListAllCompanyJobs = () => {
               </p>
 
               <div className="flex justify-end gap-2">
+                <Button
+                  type="primary"
+                  icon={<UserOutlined />}
+                  onClick={() => handleApplicant()}
+                  style={{ background: "#003A70" }}
+                >
+                  View Applicants
+                </Button>
                 <Button
                   type="primary"
                   icon={<EditOutlined />}

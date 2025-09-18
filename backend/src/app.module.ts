@@ -6,6 +6,7 @@ import { JobModule } from './job/job.module';
 import { JobApplicationModule } from './job-application/job-application.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { AppController } from './app.controller';
+import { ProfileModule } from './profile/profile.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { AppController } from './app.controller';
     CompanyModule,
     JobModule,
     JobApplicationModule,
+    ProfileModule,
     MulterModule.register({
       dest: './uploads',
     }),
