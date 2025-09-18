@@ -21,6 +21,7 @@ import {
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -31,6 +32,7 @@ const ListAllCompanyJobs = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingJob, setEditingJob] = useState(null);
+  const router = useRouter()
   const [form] = Form.useForm();
 
   const fetchJobs = async () => {
@@ -61,6 +63,24 @@ const ListAllCompanyJobs = () => {
       toast.error("Failed to delete job");
     }
   };
+
+  // const handleApplicant = async (id) => {
+  //   console.log('me chal rha ho')
+  //   try {
+  //     const res = await axios.get(`${BACKEND_URL}/applications/job/${id}`, {
+  //       headers: { Authorization: `Bearer ${token}` }
+  //     });
+  //     console.log(res.data)
+  //     setApplicants(res.data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
+
+  const handleApplicant = async (id) => {
+    router.replace('/routes/applicants', { state: { jobId: id } })
+  }
+
 
   const handleEdit = (job) => {
     setEditingJob(job);
@@ -93,10 +113,6 @@ const ListAllCompanyJobs = () => {
       toast.error(err.response?.data?.message || "Failed to update job");
     }
   };
-
-  const handleApplicant = async () => {
-    console.log('me chal rha ho')
-  }
 
   return (
     <div>
@@ -144,7 +160,7 @@ const ListAllCompanyJobs = () => {
                 <Button
                   type="primary"
                   icon={<UserOutlined />}
-                  onClick={() => handleApplicant()}
+                  onClick={() => handleApplicant(job.id)}
                   style={{ background: "#003A70" }}
                 >
                   View Applicants
