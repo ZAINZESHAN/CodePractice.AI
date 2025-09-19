@@ -137,9 +137,12 @@ export class JobService {
   }
 
   // delete job
-  async deleteJobById(userId: number, jobId: number): Promise<Job> {
+  async deleteJobById(jobId: number): Promise<Job> {
     try {
-      const job = await this.getJobById(userId, jobId);
+      const job = await this.prisma.job.findUnique({
+        where: { id: jobId },
+      });
+      if (!job) throw new NotFoundException('Job not found');
       console.log(job);
       return this.prisma.job.delete({
         where: { id: job.id },
@@ -149,7 +152,6 @@ export class JobService {
     }
   }
 
-  // job.service.ts
   async filterJobs(interest?: string, location?: string): Promise<any[]> {
     console.log('Filter API called with:', { interest, location });
 
@@ -157,10 +159,12 @@ export class JobService {
       const orConditions: any[] = [];
 
       if (interest && interest.trim() !== '') {
-        orConditions.push(
-          { title: { contains: interest, mode: 'insensitive' } },
-          { description: { contains: interest, mode: 'insensitive' } },
-        );
+        orConditions.push({
+          OR: [
+            { title: { equals: interest, mode: 'insensitive' } },
+            { title: { contains: interest, mode: 'insensitive' } },
+          ],
+        });
       }
 
       if (location && location.trim() !== '') {
@@ -169,35 +173,42 @@ export class JobService {
         });
       }
 
-      // Matched jobs: matches any condition
+      // Jobs that match interest/location
       const matchedJobs = await this.prisma.job.findMany({
         where: orConditions.length > 0 ? { OR: orConditions } : {},
         include: { company: true },
         orderBy: { createdAt: 'desc' },
       });
 
-      // Non-matched jobs: does not match any condition
+      // Jobs that do NOT match (backup list)
       const nonMatchedJobs = await this.prisma.job.findMany({
-        where: orConditions.length > 0 ? { NOT: { OR: orConditions } } : {},
+        where: orConditions.length > 0 ? { NOT: { AND: orConditions } } : {},
         include: { company: true },
         orderBy: { createdAt: 'desc' },
       });
 
-      // Merge matched + non-matched and take top 5
-      const jobsToShow = [...matchedJobs, ...nonMatchedJobs].slice(0, 5);
+      // Sorting → Exact interest match first
+      if (interest && interest.trim() !== '') {
+        matchedJobs.sort((a, b) => {
+          if (a.title.toLowerCase() === interest.toLowerCase()) return -1;
+          if (b.title.toLowerCase() === interest.toLowerCase()) return 1;
+          return 0;
+        });
+      }
 
-      console.log(
-        'Matched:',
-        matchedJobs.length,
-        'Non-matched:',
-        nonMatchedJobs.length,
+      // Merge matched + non-matched
+      let jobsToShow = [...matchedJobs, ...nonMatchedJobs];
+
+      // Remove duplicates based on job.id
+      jobsToShow = jobsToShow.filter(
+        (job, index, self) => index === self.findIndex((j) => j.id === job.id),
       );
-      console.log('Jobs to show:', jobsToShow.length);
 
+      // Slice top 5
+      jobsToShow = jobsToShow.slice(0, 5);
       return jobsToShow;
     } catch (error) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      console.error('❌ Job filter error:', error.message || error);
+      console.error('❌ Job filter error:', error || error);
       throw new HttpException('Something went wrong while filtering jobs', 500);
     }
   }

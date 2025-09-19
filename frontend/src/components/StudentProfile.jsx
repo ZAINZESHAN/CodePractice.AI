@@ -48,6 +48,8 @@ const StudentProfile = () => {
     if (token) fetchApplications();
   }, [token]);
 
+  console.log(user)
+
   return (
     <div className="min-h-[70vh] bg-[#f5f9ff]">
       <Card className="w-full shadow-lg rounded-2xl border border-gray-200">
@@ -74,19 +76,13 @@ const StudentProfile = () => {
               </p>
               <p>
                 <PhoneOutlined className="mr-2 text-blue-600" />
-                {user?.phone || "+92-300-0000000"}
+                {user?.phoneNumber || "+92-300-0000000"}
               </p>
             </div>
           </Col>
 
           {/* Right Side: About + Resume + Applications */}
           <Col xs={24} md={16} className=" pt-4">
-            <Title level={4}>About Me</Title>
-            <Paragraph>
-              {user?.about ||
-                "I am a passionate student looking for exciting opportunities to grow in my career. I enjoy learning new skills and applying them to real-world challenges."}
-            </Paragraph>
-
             <Divider />
 
             <Title level={4}>Resume</Title>

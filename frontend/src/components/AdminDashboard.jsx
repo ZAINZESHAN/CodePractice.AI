@@ -134,6 +134,20 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleDeleteStudent = async (id) => {
+    try {
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/deletestu/${id}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      toast.success("Student deleted successfully!");
+      fetchStudents();
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to delete student");
+    }
+  };
+
   // Table columns
   const companyColumns = [
     { title: "ID", dataIndex: "id", key: "id" },
@@ -181,6 +195,20 @@ const AdminDashboard = () => {
     { title: "Name", dataIndex: "name", key: "name" },
     { title: "Email", dataIndex: "email", key: "email" },
     { title: "Role", dataIndex: "role", key: "role" },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Popconfirm
+          title="Are you sure to delete this student?"
+          onConfirm={() => handleDeleteStudent(record.id)}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button danger icon={<DeleteOutlined />} />
+        </Popconfirm>
+      ),
+    },
   ];
   const companyUserColumns = [
     { title: "ID", dataIndex: "id", key: "id" },
@@ -218,7 +246,7 @@ const AdminDashboard = () => {
           collapsedWidth="0"
           className="hidden md:block" // Hide on small screens
           width={250}
-          style={{ backgroundColor: "#f5f5f5"}}
+          style={{ backgroundColor: "#f5f5f5" }}
         >
           <Menu
             mode="inline"

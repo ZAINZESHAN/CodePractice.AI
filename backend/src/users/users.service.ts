@@ -114,4 +114,20 @@ export class UsersService {
     });
   }
 
+  async deleteStudent(userIdToDelete: number) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userIdToDelete },
+    });
+    if (!user) throw new Error('User not found');
+
+    // delete related job applications first
+    await this.prisma.jobApplication.deleteMany({
+      where: { studentId: userIdToDelete },
+    });
+
+    // then delete the student
+    return this.prisma.user.delete({
+      where: { id: userIdToDelete },
+    });
+  }
 }

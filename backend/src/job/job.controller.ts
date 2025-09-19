@@ -79,7 +79,7 @@ export class JobController {
   @Delete('delete/:id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.COMPANY_ROOT)
-  deleteJobById(@Req() req: AuthRequest, @Param('id') id: string) {
-    return this.jobService.deleteJobById(req.user.id, Number(id));
+  async deleteJobById(@Param('id') id: string) {
+    return this.jobService.deleteJobById(Number(id));
   }
 }

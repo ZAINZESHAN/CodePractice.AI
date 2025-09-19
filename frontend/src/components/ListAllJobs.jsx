@@ -25,21 +25,31 @@ const ListAllJobs = ({ searchQuery = "" }) => {
   const [submitting, setSubmitting] = useState(false);
   const [form] = Form.useForm();
 
-  // Fetch jobs filtered by user profile
+ 
+
   const fetchFilteredJobs = async () => {
-    setLoading(true);
-    try {
-      const res = await axios.get(`${BACKEND_URL}/job/filter`, {
+  setLoading(true);
+  try {
+    let res;
+    if (user?.interest && user?.location) {
+      // Filtered jobs
+      res = await axios.get(`${BACKEND_URL}/job/filter`, {
         params: { interest: user.interest, location: user.location },
         headers: { Authorization: `Bearer ${token}` },
       });
-      setJobs(res.data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
+    } else {
+      // All jobs
+      res = await axios.get(`${BACKEND_URL}/job/all`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
     }
-  };
+    setJobs(res.data);
+  } catch (err) {
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+};
 
   // Fetch applied jobs of student
   const fetchAppliedJobs = async () => {
@@ -55,7 +65,7 @@ const ListAllJobs = ({ searchQuery = "" }) => {
 
   useEffect(() => {
     if (!user || !token) return;
-    if (!user.interest || !user.location) return;
+    // if (!user.interest || !user.location) return;
     fetchFilteredJobs();
     fetchAppliedJobs();
   }, [user, token]);
@@ -98,20 +108,20 @@ const ListAllJobs = ({ searchQuery = "" }) => {
       if (!file) throw new Error("Please attach your resume file");
 
       const resumeUrl = await uploadResumeToCloudinary(file);
+      const phoneNumber = values.number.toString();
 
       const res = await axios.post(
         `${BACKEND_URL}/applications/apply`,
         {
           jobId: selectedJob.id,
-          phoneNumber: values.number.toString(),
+          phoneNumber,
           resumeUrl,
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      // Add applied job to state
-      setAppliedJobs((prev) => [...prev, res.data]); // full object including status
-      updateUser({ resumeUrl });
+      setAppliedJobs((prev) => [...prev, res.data]);
+      updateUser({ phoneNumber, resumeUrl });
 
       toast.success("Job applied successfully 🎉");
       setIsModalOpen(false);
@@ -120,7 +130,7 @@ const ListAllJobs = ({ searchQuery = "" }) => {
       console.error(err);
       toast.error(err.response?.data?.message || "Something went wrong");
     } finally {
-      setSubmitting(false); // stop loading
+      setSubmitting(false);
     }
   };
 
@@ -185,8 +195,8 @@ const ListAllJobs = ({ searchQuery = "" }) => {
                           status === "PENDING"
                             ? "orange"
                             : status === "ACCEPTED"
-                            ? "green"
-                            : "red"
+                              ? "green"
+                              : "red"
                         }
                         style={{ fontWeight: "bold" }}
                       >

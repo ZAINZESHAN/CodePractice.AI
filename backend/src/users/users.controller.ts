@@ -50,4 +50,11 @@ export class UsersController {
   async deleteCompanyUser(@Req() req: AuthRequest, @Param('id') id: string) {
     return this.usersService.deleteCompanyUser(Number(id), req.user);
   }
+
+  @Delete('deletestu/:id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  async deleteStudent(@Param('id') id: string) {
+    return this.usersService.deleteStudent(Number(id));
+  }
 }

@@ -22,8 +22,6 @@ const StudentDashboard = () => {
   const [profileComplete, setProfileComplete] = useState(
     user?.interest && user?.location ? true : false
   );
-  console.log(user.interest)
-  console.log(user.location)
   const dashboardSteps = [
     {
       title: "My Profile",
@@ -90,20 +88,6 @@ const StudentDashboard = () => {
             <p className="text-gray-300">
               Welcome to Campass! Explore, Check, and Apply to your dream jobs.
             </p>
-            {/* <Button
-              type="primary"
-              className="transition-all md:w-[150px] duration-300 hover:scale-105 hover:border-white"
-              style={{
-                background: "white",
-                color: "#002C55",
-                borderColor: "#002C55",
-                height: "40px",
-                fontSize: "15px",
-                fontWeight: "500",
-              }}
-            >
-              View Jobs
-            </Button> */}
           </div>
           <div className="md:w-[50%] overflow-hidden flex justify-center md:justify-end items-center">
             <Image
@@ -164,7 +148,6 @@ const StudentDashboard = () => {
             position: "fixed",
             right: "20px",
             bottom: "20px",
-            height: "100vh",
             display: "flex",
             alignItems: "flex-end",
             zIndex: 9999,
