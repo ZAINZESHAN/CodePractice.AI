@@ -1,3 +1,4 @@
+"use client";
 import "../app/globals.css";
 import {
   PlusOutlined,
@@ -7,14 +8,18 @@ import {
 } from "@ant-design/icons";
 import { Button, Card } from "antd";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import job_img from "../assets/job-img.png";
 import Image from "next/image";
 import CompUserList from "./CompUserList";
 import ListAllCompanyJobs from "./ListAllCompanyJobs";
 import AllApplicants from "./AllApplicants";
+import { useRouter } from "next/navigation";
 
 const CompRootDashboard = () => {
+  const router = useRouter();
+  const [disabled, setDisabled] = useState(false);
+
   // const steps = [
   //   {
   //     title: "Create your free account",
@@ -67,11 +72,20 @@ const CompRootDashboard = () => {
           <h1 className="text-[40px] md:text-[50px] text-black font-bold leading-snug">
             Let's make your next <br /> great hire. Fast.
           </h1>
-          <Link href={"/routes/job-posting"}>
-            <button className="mt-6 bg-[#003A70] cursor-pointer md:w-[180px] h-[50px] rounded-md font-bold transition-all duration-300 hover:scale-105">
-              <span className="text-white">Post a job</span>
-            </button>
-          </Link>
+          <button
+            onClick={() => {
+              setDisabled(true);
+              router.push("/routes/job-posting");
+            }}
+            disabled={disabled}
+            className={`mt-6 bg-[#003A70] md:w-[180px] h-[50px] rounded-md font-bold text-white transition-all duration-300 hover:scale-105 ${
+              disabled
+                ? "opacity-50 cursor-not-allowed hover:scale-100"
+                : "cursor-pointer"
+            }`}
+          >
+            Post a job
+          </button>
         </div>
         <div className="md:w-[50%] overflow-hidden flex justify-center items-center">
           <Image
@@ -139,22 +153,22 @@ const CompRootDashboard = () => {
             to manage job postings, review applications, and collaborate with
             the hiring team.
           </p>
-          <Link href="/routes/compuser-signup">
-            <button className="bg-[#003A70] px-6 py-2 rounded-md font-bold hover:scale-105 transition-all duration-300">
-              <span className="text-white">Add User</span>
-            </button>
-          </Link>
+          
+          <button
+            onClick={() => {
+              setDisabled(true);
+              router.push("/routes/job-posting");
+            }}
+            disabled={disabled}
+            className={`bg-[#003A70] px-6 py-2 rounded-md font-bold hover:scale-105 transition-all duration-300 ${
+              disabled
+                ? "opacity-50 cursor-not-allowed hover:scale-100"
+                : "cursor-pointer"
+            }`}
+          >
+            <span className="text-white">Add User</span>
+          </button>
         </Card>
-      </div>
-
-      <div className="w-full lg:w-[80%] mt-16 px-6 lg:px-0">
-        <h2
-          className="text-[28px] font-bold text-[#003A70] mb-6"
-          style={{ fontWeight: "600" }}
-        >
-          Company Employee
-        </h2>
-        <CompUserList />
       </div>
 
       {/* Recent Jobs */}
@@ -167,16 +181,18 @@ const CompRootDashboard = () => {
         </h2>
         <ListAllCompanyJobs />
       </div>
-      {/* All Applicants */}
+
       <div className="w-full lg:w-[80%] mt-16 px-6 lg:px-0">
         <h2
           className="text-[28px] font-bold text-[#003A70] mb-6"
           style={{ fontWeight: "600" }}
         >
-          All Applicants
+          Company Employee
         </h2>
-        <AllApplicants />
+        <CompUserList />
       </div>
+
+      {/* All Applicants */}
     </div>
   );
 };

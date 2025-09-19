@@ -9,13 +9,13 @@ const ManageCompnayUsers = () => {
           className="text-[28px] font-bold text-center text-[#003A70] pb-8"
           style={{ fontWeight: "600" }}
         >
-          Manage Company Jobs
+          Manage Company Users
         </h1>
         <h1
           className="text-[28px] font-bold text-[#003A70] mb-6"
           style={{ fontWeight: "600" }}
         >
-          All Compnay Jobs
+          All Compnay Users
         </h1>
         <CompUserList />
       </div>

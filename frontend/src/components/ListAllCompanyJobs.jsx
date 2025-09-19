@@ -32,7 +32,9 @@ const ListAllCompanyJobs = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingJob, setEditingJob] = useState(null);
-  const router = useRouter()
+    const [disabledJobs, setDisabledJobs] = useState({}); // track disabled buttons
+
+  const router = useRouter();
   const [form] = Form.useForm();
 
   const fetchJobs = async () => {
@@ -52,6 +54,11 @@ const ListAllCompanyJobs = () => {
     if (token) fetchJobs();
   }, [token]);
 
+  const handleClick = (jobId) => {
+    setDisabledJobs((prev) => ({ ...prev, [jobId]: true }));
+    handleApplicant(jobId);
+  };
+
   const handleDelete = async (id) => {
     try {
       await axios.delete(`${BACKEND_URL}/job/delete/${id}`, {
@@ -64,23 +71,9 @@ const ListAllCompanyJobs = () => {
     }
   };
 
-  // const handleApplicant = async (id) => {
-  //   console.log('me chal rha ho')
-  //   try {
-  //     const res = await axios.get(`${BACKEND_URL}/applications/job/${id}`, {
-  //       headers: { Authorization: `Bearer ${token}` }
-  //     });
-  //     console.log(res.data)
-  //     setApplicants(res.data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
-
-  const handleApplicant = async (id) => {
-    router.replace('/routes/applicants', { state: { jobId: id } })
-  }
-
+  const handleApplicant = (id) => {
+    router.push(`/routes/applicants?jobId=${id}`);
+  };
 
   const handleEdit = (job) => {
     setEditingJob(job);
@@ -125,7 +118,7 @@ const ListAllCompanyJobs = () => {
           md: 2,
           lg: 2,
           xl: 2,
-          xxl: 3,
+          xxl: 2,
         }}
         dataSource={jobs}
         renderItem={(job) => (
@@ -160,7 +153,7 @@ const ListAllCompanyJobs = () => {
                 <Button
                   type="primary"
                   icon={<UserOutlined />}
-                  onClick={() => handleApplicant(job.id)}
+                  onClick={() => handleClick(job.id)}
                   style={{ background: "#003A70" }}
                 >
                   View Applicants

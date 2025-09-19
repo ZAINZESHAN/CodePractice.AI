@@ -1,4 +1,3 @@
-import React from "react";
 import hero_img from "../assets/system2.png";
 import Image from "next/image";
 import { Button, Card } from "antd";

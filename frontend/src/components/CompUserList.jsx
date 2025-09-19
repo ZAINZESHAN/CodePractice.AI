@@ -23,6 +23,7 @@ const CompUserList = () => {
       const res = await axios.get(`${BACKEND_URL}/users/company-users`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      console.log(res.data)
       setUsers(res.data);
     } catch (error) {
       message.error("Failed to load Employees");
@@ -60,7 +61,7 @@ const CompUserList = () => {
           md: 2,
           lg: 2,
           xl: 2,
-          xxl: 3,
+          xxl: 2,
         }}
         dataSource={users}
         renderItem={(user) => (
@@ -69,7 +70,7 @@ const CompUserList = () => {
               className="rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-[#003A70]"
               title={
                 <h1 className="text-lg font-semibold text-[#003A70]">
-                  {user.name?.toUpperCase() || "UNKNOWN"}
+                  {user.name?.charAt(0).toUpperCase() + user.name.slice(1)}
                 </h1>
               }
               extra={
@@ -80,7 +81,7 @@ const CompUserList = () => {
               }
             >
               <p className="text-gray-700 flex items-center gap-1">
-                <UserOutlined /> {user.email?.toLowerCase()}
+                <UserOutlined />{user.email?.toLowerCase()}
               </p>
               <div className="flex justify-end gap-2">
                 <Popconfirm

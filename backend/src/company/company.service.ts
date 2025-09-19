@@ -32,7 +32,7 @@ export class CompanyService {
 
     // 3. Delete all users of this company
     await this.prisma.user.deleteMany({
-      where: { companyId: id, role: 'COMPANY_USER' },
+      where: { companyId: id },
     });
 
     // 4. Delete the company itself

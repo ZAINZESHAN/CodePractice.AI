@@ -1,16 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import { Input, Button, Card, message } from "antd";
+import { Input, Button, Card } from "antd";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
-import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 
 const { TextArea } = Input;
 
 const JobPost = () => {
-  const { token } = useAuth(); // auth se token nikalna
+  const { token } = useAuth();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [job, setJob] = useState({
@@ -20,42 +20,65 @@ const JobPost = () => {
     location: "",
   });
 
+  const [errors, setErrors] = useState({
+    title: "",
+    description: "",
+    salary: "",
+    location: "",
+  });
+
   const handleChange = (e) => {
     setJob({ ...job, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: "" });
+  };
+
+  const validate = () => {
+    const newErrors = {};
+    if (!job.title) newErrors.title = "Please fill the Job Title";
+    if (!job.description) newErrors.description = "Please fill the Job Description";
+    if (!job.salary) newErrors.salary = "Please fill the Job Salary";
+    if (!job.location) newErrors.location = "Please fill the Job Location";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async () => {
-    if (!job.title || !job.description || !job.location || !job.salary) {
-      return toast.error("Please fill all fields");
-    }
+    if (!validate()) return;
 
     try {
       setLoading(true);
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/job/create`,
         { ...job, salary: Number(job.salary) },
-        { headers: { Authorization: `Bearer ${token}` } },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      console.log(res);
-
       if (res.data?.id) {
-        toast.success("Job posted successfully!");
-        setJob({ title: "", description: "", location: "", salary: "" });
-        void router.push("/routes/comproot-dashboard");
-      } else {
-        toast.warning("Job created but no response data received!");
+        setJob({ title: "", description: "", salary: "", location: "" });
+        router.push("/routes/comproot-dashboard");
       }
     } catch (err) {
       console.error("Job post error:", err.response?.data || err.message);
-      toast.error(err.response?.data?.message || "Failed to post job");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex justify-center py-10">
+    <div className="flex flex-col items-center py-10 px-4 sm:px-[5vw] md:px-[7vw] lg:px-[4vw]">
+      {/* Top-left arrow button */}
+      <div className="w-full flex justify-start mb-6">
+        <Button
+          type="default"
+          icon={<ArrowLeftOutlined />}
+          onClick={() => router.push("/routes/comproot-dashboard")}
+          className="rounded bg-gray-200 hover:bg-gray-300"
+          style={{ padding: "6px 10px" }}
+        />
+      </div>
+
+      {/* Card */}
       <Card
         className="w-full md:w-[60%] shadow-md"
         style={{ borderRadius: "12px" }}
@@ -75,8 +98,9 @@ const JobPost = () => {
               value={job.title}
               onChange={handleChange}
               placeholder="Enter job title"
-              className="h-[45px] border-gray-300"
+              className={`h-[45px] border-gray-300 ${errors.title && "border-red-500"}`}
             />
+            {errors.title && <span className="text-red-500 text-sm mt-1">{errors.title}</span>}
           </div>
 
           {/* Job Description */}
@@ -90,8 +114,9 @@ const JobPost = () => {
               onChange={handleChange}
               placeholder="Enter job description"
               rows={5}
-              className="border-gray-300"
+              className={`border-gray-300 ${errors.description && "border-red-500"}`}
             />
+            {errors.description && <span className="text-red-500 text-sm mt-1">{errors.description}</span>}
           </div>
 
           {/* Job Salary */}
@@ -105,8 +130,9 @@ const JobPost = () => {
               value={job.salary}
               onChange={handleChange}
               placeholder="Enter job salary"
-              className="h-[45px] border-gray-300"
+              className={`h-[45px] border-gray-300 ${errors.salary && "border-red-500"}`}
             />
+            {errors.salary && <span className="text-red-500 text-sm mt-1">{errors.salary}</span>}
           </div>
 
           {/* Job Location */}
@@ -119,8 +145,9 @@ const JobPost = () => {
               value={job.location}
               onChange={handleChange}
               placeholder="Enter job location"
-              className="h-[45px] border-gray-300"
+              className={`h-[45px] border-gray-300 ${errors.location && "border-red-500"}`}
             />
+            {errors.location && <span className="text-red-500 text-sm mt-1">{errors.location}</span>}
           </div>
 
           {/* Submit Button */}
@@ -128,6 +155,7 @@ const JobPost = () => {
             type="primary"
             loading={loading}
             onClick={handleSubmit}
+            disabled={loading}
             style={{
               background: "#003A70",
               fontWeight: "500",

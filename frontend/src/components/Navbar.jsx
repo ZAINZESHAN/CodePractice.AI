@@ -78,14 +78,14 @@ const Navbar = () => {
         {
           key: "signup-student",
           label: (
-            <Link href="/module/auth/signup-student">Signup as Student</Link>
+            <Link href="/routes/student-signup">Signup as Student</Link>
           ),
           icon: <UserOutlined />,
         },
         {
           key: "signup-company",
           label: (
-            <Link href="/module/auth/signup-company">Signup as Company</Link>
+            <Link href="/routes/comproot-signup">Signup as Company</Link>
           ),
           icon: <UserOutlined />,
         },
@@ -132,7 +132,7 @@ const Navbar = () => {
           >
             <div className="flex items-center space-x-2 cursor-pointer md:bg-gray-100 md:px-3 py-1 md:rounded-full md:border border-[#003A70] md:hover:shadow-md transition">
               <span className="hidden md:inline font-medium text-[#003A70]">
-                {user ? user.name : "Sign In"}
+                {user ? user.name.charAt(0).toUpperCase() + user.name.slice(1) : "Sign In"}
               </span>
               <Avatar
                 icon={<UserOutlined />}

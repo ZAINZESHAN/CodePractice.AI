@@ -1,9 +1,6 @@
 "use client";
 
 import "../app/globals.css";
-import { PlusOutlined, UnorderedListOutlined } from "@ant-design/icons";
-import { Card } from "antd";
-import Link from "next/link";
 import React from "react";
 import job_img from "../assets/job-img.png";
 import Image from "next/image";
@@ -18,11 +15,14 @@ const CompUserDashboard = () => {
           <h1 className="text-[40px] md:text-[50px] font-bold leading-snug">
             Let's make your next <br /> great hire. Fast.
           </h1>
-          <Link href={"/routes/job-posting"}>
-            <button className="mt-6 bg-[#003A70] cursor-pointer md:w-[180px] h-[50px] rounded-md font-bold transition-all duration-300 hover:scale-105 text-white">
-              Post a Job
-            </button>
-          </Link>
+          <button
+            onClick={() => {
+              router.push("/routes/job-posting");
+            }}
+            className={`mt-6 bg-[#003A70] md:w-[180px] h-[50px] rounded-md font-bold text-white transition-all duration-300 hover:scale-105`}
+          >
+            <span className="text-white">Post a job</span>
+          </button>
         </div>
         <div className="md:w-[50%] overflow-hidden flex justify-center items-center">
           <Image
@@ -35,7 +35,7 @@ const CompUserDashboard = () => {
 
       {/* Company Job Posts */}
       <div className="w-full lg:w-[80%] mt-16 px-6 lg:px-0">
-        <h2 className="text-[28px] font-bold text-[#003A70] mb-6">Your Jobs</h2>
+        <h2 className="text-[28px] font-bold text-[#003A70] mb-6" style={{fontWeight: '600'}}>Your Jobs</h2>
         <ListAllCompanyJobs showActions={false} />{" "}
         {/* Only show jobs, no edit/delete */}
       </div>

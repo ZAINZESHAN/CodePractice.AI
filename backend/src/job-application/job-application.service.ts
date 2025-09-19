@@ -59,19 +59,52 @@ export class JobApplicationService {
   }
 
   // COMPANY: Get applicants for a specific job
-  async getApplicants(
-    companyId: number,
-    jobId: number,
-  ): Promise<JobApplication[]> {
-    const job = await this.prisma.job.findUnique({ where: { id: jobId } });
-    if (!job || job.companyId !== companyId)
-      throw new ForbiddenException('Not authorized');
+  // async getApplicants(
+  //   companyId: number,
+  //   jobId: number,
+  // ): Promise<JobApplication[]> {
+  //   const job = await this.prisma.job.findUnique({ where: { id: jobId } });
+  //   if (!job || job.companyId !== companyId)
+  //     throw new ForbiddenException('Not authorized');
 
-    return this.prisma.jobApplication.findMany({
-      where: { jobId },
-      include: { student: true },
-    });
-  }
+  //   return this.prisma.jobApplication.findMany({
+  //     where: { jobId },
+  //     include: { student: true },
+  //   });
+  // }
+
+  // COMPANY: Get applicants for a specific job
+async getApplicants(
+  companyId: number,
+  jobId: number,
+): Promise<JobApplication[]> {
+  const job = await this.prisma.job.findUnique({ where: { id: jobId } });
+  if (!job || job.companyId !== companyId)
+    throw new ForbiddenException('Not authorized');
+
+  return this.prisma.jobApplication.findMany({
+    where: { jobId },
+    include: { 
+      student: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          resumeUrl: true,
+        },
+      },
+      job: {
+        select: {
+          id: true,
+          title: true,
+          location: true,
+        },
+      },
+    },
+    orderBy: { createdAt: 'desc' },
+  });
+}
+
 
   // COMPANY: Update applicant status
   async updateStatus(

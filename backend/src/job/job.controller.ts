@@ -18,7 +18,6 @@ import { RolesGuard } from 'src/guards/roles.guards';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guards';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from '@prisma/client';
-
 interface AuthRequest extends Request {
   user: UserEntity;
 }
@@ -68,7 +67,7 @@ export class JobController {
 
   @Patch('update/:id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.COMPANY_ROOT, Role.ADMIN)
+  @Roles(Role.COMPANY_ROOT, Role.ADMIN, Role.COMPANY_ROOT)
   updateJObById(
     @Req() req: AuthRequest,
     @Param('id') id: string,

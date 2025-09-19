@@ -7,10 +7,12 @@ import {
   MailOutlined,
   UserOutlined,
   FileTextOutlined,
+  ArrowLeftOutlined,
 } from "@ant-design/icons";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const { Option } = Select;
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -19,6 +21,7 @@ const AllApplicant = () => {
   const { token } = useAuth();
   const [applicants, setApplicants] = useState([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter(); // router for navigation
 
   // Fetch all applicants
   const fetchApplicants = async () => {
@@ -44,14 +47,14 @@ const AllApplicant = () => {
       await axios.patch(
         `${BACKEND_URL}/applications/${appId}/status`,
         { status: newStatus },
-        { headers: { Authorization: `Bearer ${token}` } },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       toast.success("Status updated successfully!");
       setApplicants((prev) =>
         prev.map((app) =>
-          app.id === appId ? { ...app, status: newStatus } : app,
-        ),
+          app.id === appId ? { ...app, status: newStatus } : app
+        )
       );
     } catch (err) {
       toast.error("Failed to update status");
@@ -60,6 +63,26 @@ const AllApplicant = () => {
 
   return (
     <div>
+      <div className="my-8">
+        <div className="flex items-center justify-between mb-6">
+          {/* Left-aligned button */}
+          <Button
+            type="default"
+            icon={<ArrowLeftOutlined />}
+            onClick={() => router.push("/routes/comproot-dashboard")}
+            className="rounded bg-gray-200 hover:bg-gray-300"
+            style={{ padding: "6px 10px" }}
+          />
+          {/* Centered heading */}
+          <h2
+            className="text-[28px] font-bold text-[#003A70] absolute left-1/2 transform -translate-x-1/2"
+            style={{ fontWeight: "600" }}
+          >
+            All Applicants
+          </h2>
+        </div>
+      </div>
+
       <List
         loading={loading}
         grid={{
@@ -80,7 +103,7 @@ const AllApplicant = () => {
                 <div className="flex items-center gap-2">
                   <UserOutlined className="text-[#003A70]" />
                   <span className="text-lg text-[#003A70]">
-                    {app.student?.name || "N/A"}
+                    {app.student?.name.charAt(0).toUpperCase() + app.student.name.slice(1) || "N/A"}
                   </span>
                 </div>
               }

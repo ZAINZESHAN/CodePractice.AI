@@ -5,7 +5,7 @@ import {
   EnvironmentOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
-import { Button, Card, List, Modal, Form, Input, Upload } from "antd";
+import { Button, Card, List, Modal, Form, Input, Upload, Tag } from "antd";
 import axios from "axios";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -21,16 +21,16 @@ const ListAllJobs = ({ searchQuery = "" }) => {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
+  const [appliedJobs, setAppliedJobs] = useState([]); // full applied job objects
+  const [submitting, setSubmitting] = useState(false);
   const [form] = Form.useForm();
 
+  // Fetch jobs filtered by user profile
   const fetchFilteredJobs = async () => {
     setLoading(true);
     try {
       const res = await axios.get(`${BACKEND_URL}/job/filter`, {
-        params: {
-          interest: user.interest,
-          location: user.location,
-        },
+        params: { interest: user.interest, location: user.location },
         headers: { Authorization: `Bearer ${token}` },
       });
       setJobs(res.data);
@@ -41,17 +41,29 @@ const ListAllJobs = ({ searchQuery = "" }) => {
     }
   };
 
+  // Fetch applied jobs of student
+  const fetchAppliedJobs = async () => {
+    try {
+      const res = await axios.get(`${BACKEND_URL}/applications/my`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setAppliedJobs(res.data); // store full objects including status
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
-    if (!user) return; // wait for user
-    if (!user.interest || !user.location) return; // wait for profile complete
+    if (!user || !token) return;
+    if (!user.interest || !user.location) return;
     fetchFilteredJobs();
+    fetchAppliedJobs();
   }, [user, token]);
 
   const filteredJobs = jobs.filter(
     (job) =>
       job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      job.company?.name.toLowerCase().includes(searchQuery.toLowerCase()),
+      job.company?.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleApply = (job) => {
@@ -70,7 +82,7 @@ const ListAllJobs = ({ searchQuery = "" }) => {
 
     const res = await fetch(
       `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`,
-      { method: "POST", body: data },
+      { method: "POST", body: data }
     );
     const json = await res.json();
     if (!res.ok)
@@ -80,29 +92,35 @@ const ListAllJobs = ({ searchQuery = "" }) => {
 
   const handleOk = async () => {
     try {
+      setSubmitting(true);
       const values = await form.validateFields();
       const file = values.resume?.[0]?.originFileObj;
       if (!file) throw new Error("Please attach your resume file");
 
       const resumeUrl = await uploadResumeToCloudinary(file);
 
-      await axios.post(
+      const res = await axios.post(
         `${BACKEND_URL}/applications/apply`,
         {
           jobId: selectedJob.id,
           phoneNumber: values.number.toString(),
           resumeUrl,
         },
-        { headers: { Authorization: `Bearer ${token}` } },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
+      // Add applied job to state
+      setAppliedJobs((prev) => [...prev, res.data]); // full object including status
       updateUser({ resumeUrl });
+
       toast.success("Job applied successfully 🎉");
       setIsModalOpen(false);
       form.resetFields();
     } catch (err) {
       console.error(err);
       toast.error(err.response?.data?.message || "Something went wrong");
+    } finally {
+      setSubmitting(false); // stop loading
     }
   };
 
@@ -127,54 +145,82 @@ const ListAllJobs = ({ searchQuery = "" }) => {
         loading={loading}
         grid={{ gutter: 20, xs: 1, sm: 1, md: 2, lg: 2, xl: 2, xxl: 3 }}
         dataSource={filteredJobs}
-        renderItem={(job) => (
-          <List.Item>
-            <Card
-              className="rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-[#003A70]"
-              title={<h1 className="text-lg text-[#003A70]">{job.title}</h1>}
-              extra={
-                <span className="text-xs text-gray-500 flex items-center gap-1">
-                  <CalendarOutlined />{" "}
-                  {new Date(job.createdAt).toLocaleDateString()}
-                </span>
-              }
-            >
-              <p className="text-gray-700 mb-2">
-                <b>Desc: </b>
-                {job.description.length > 40
-                  ? job.description.slice(0, 40) + "..."
-                  : job.description}
-              </p>
-              <p className="text-gray-700 mb-2">
-                <b>Salary: </b>
-                {job.salary}
-              </p>
-              <p className="text-gray-500 flex items-center gap-1 text-sm mb-4">
-                <EnvironmentOutlined style={{ color: "black" }} />{" "}
-                {job.location || "Not specified"}
-              </p>
+        renderItem={(job) => {
+          const appliedJob = appliedJobs.find((app) => app.jobId === job.id);
+          const isApplied = !!appliedJob;
+          const status = appliedJob?.status;
 
-              <div className="flex justify-end gap-2">
-                <Button
-                  type="primary"
-                  onClick={() => handleApply(job)}
-                  className="text-[#003A70] transition-all duration-300 hover:scale-105 hover:border-white flex items-center gap-1"
-                  style={{
-                    border: "none",
-                    background: "#f5f5f5",
-                    color: "#003A70",
-                  }}
-                >
-                  <Image className="w-[20px]" src={arrow_icon} alt="arrow" />
-                  Easy to Apply
-                </Button>
-              </div>
-            </Card>
-          </List.Item>
-        )}
+          return (
+            <List.Item key={job.id}>
+              <Card
+                className="rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-[#003A70]"
+                title={<h1 className="text-lg text-[#003A70]">{job.title}</h1>}
+                extra={
+                  <span className="text-xs text-gray-500 flex items-center gap-1">
+                    <CalendarOutlined />{" "}
+                    {new Date(job.createdAt).toLocaleDateString()}
+                  </span>
+                }
+              >
+                <p className="text-gray-700 mb-2">
+                  <b>Desc: </b>
+                  {job.description.length > 40
+                    ? job.description.slice(0, 40) + "..."
+                    : job.description}
+                </p>
+                <p className="text-gray-700 mb-2">
+                  <b>Salary: </b>
+                  {job.salary}
+                </p>
+                <p className="text-gray-500 flex items-center gap-1 text-sm mb-4">
+                  <EnvironmentOutlined style={{ color: "black" }} />{" "}
+                  {job.location || "Not specified"}
+                </p>
+
+                <div className="flex justify-end gap-2">
+                  <div className="flex justify-end gap-2">
+                    {isApplied ? (
+                      <Tag
+                        color={
+                          status === "PENDING"
+                            ? "orange"
+                            : status === "ACCEPTED"
+                            ? "green"
+                            : "red"
+                        }
+                        style={{ fontWeight: "bold" }}
+                      >
+                        {status}
+                      </Tag>
+                    ) : (
+                      <Button
+                        type="primary"
+                        onClick={() => handleApply(job)}
+                        className="text-[#003A70] transition-all duration-300 hover:scale-105 hover:border-white flex items-center gap-1"
+                        style={{
+                          border: "none",
+                          background: "#f5f5f5",
+                          color: "#003A70",
+                          cursor: "pointer",
+                        }}
+                      >
+                        <Image
+                          className="w-[20px]"
+                          src={arrow_icon}
+                          alt="arrow"
+                        />
+                        Easy to Apply
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </Card>
+            </List.Item>
+          );
+        }}
       />
 
-      {/* ✅ Modal for Apply */}
+      {/* Modal */}
       <Modal
         title={
           <h2 className="text-[#003A70] text-lg font-semibold">
@@ -188,6 +234,7 @@ const ListAllJobs = ({ searchQuery = "" }) => {
         cancelText="Cancel"
         okButtonProps={{
           style: { background: "#003A70", borderColor: "#003A70" },
+          loading: submitting, // ✅ spinner ke sath text bhi dikhega
         }}
       >
         <Form form={form} layout="vertical">
