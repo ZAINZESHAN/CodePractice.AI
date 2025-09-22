@@ -72,7 +72,7 @@ const StudentDashboard = () => {
         </div>
       )}
 
-      <div className="w-[100%] h-[100vh] md:h-[70vh] flex flex-col justify-between items-center">
+      <div className="w-full h-[100vh] md:h-[70vh] flex flex-col justify-between items-center">
         <div
           className="flex w-full h-[60%] md:h-[60%] rounded-md px-6 py-10 md:pl-6 flex-col md:flex-row justify-center"
           style={{ background: "linear-gradient(90deg, #002C55, #003A70 )" }}
