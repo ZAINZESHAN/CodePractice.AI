@@ -12,10 +12,9 @@ import {
 import { toast } from "react-toastify";
 
 const { Option } = Select;
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const ViewApplicant = () => {
-  const { token } = useAuth();
+  const { token, backendUrl } = useAuth();
   const [applicants, setApplicants] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -27,7 +26,7 @@ const ViewApplicant = () => {
     if (!id) return;
     setLoading(true);
     try {
-      const res = await axios.get(`${BACKEND_URL}/applications/job/${id}`, {
+      const res = await axios.get(`${backendUrl}/applications/job/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setApplicants(res.data);
@@ -46,7 +45,7 @@ const ViewApplicant = () => {
   const handleStatusChange = async (appId, newStatus) => {
     try {
       await axios.patch(
-        `${BACKEND_URL}/applications/${appId}/status`,
+        `${backendUrl}/applications/${appId}/status`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -69,7 +68,7 @@ const ViewApplicant = () => {
           <Button
             type="default"
             icon={<ArrowLeftOutlined />}
-            onClick={() => router.push("/routes/comproot-dashboard")}
+            onClick={() => router.push("/company/dashboard")}
             className="rounded bg-gray-200 hover:bg-gray-300"
             style={{ padding: "6px 10px" }}
           />
@@ -95,7 +94,7 @@ const ViewApplicant = () => {
                 <h1 className="text-lg text-[#003A70]">
                   {app.student.name
                     ? app.student.name.charAt(0).toUpperCase() +
-                      app.student.name.slice(1).toLowerCase()
+                    app.student.name.slice(1).toLowerCase()
                     : "N/A"}
                 </h1>
               }

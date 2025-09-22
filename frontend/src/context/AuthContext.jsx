@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [role, setRole] = useState(null);
   const [loading, setLoading] = useState(true);
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   // Load user from localStorage
   useEffect(() => {
@@ -69,7 +70,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, token, role, loading, login, logout, updateUser }}
+      value={{ user, token, role, loading, login, logout, updateUser, backendUrl }}
     >
       {children}
     </AuthContext.Provider>

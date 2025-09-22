@@ -16,9 +16,9 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   useEffect(() => {
     if (!loading) {
       if (!user) {
-        window.location.href = "/routes/login";
+        window.location.href = "/login";
       } else if (!allowed.includes(normalizedRole)) {
-        window.location.href = "/routes/unauthorized";
+        window.location.href = "/unauthorized";
       }
     }
   }, [user, normalizedRole, allowed, loading]);

@@ -7,10 +7,10 @@ import Footer from "./Footer";
 const ClientLayout = ({ children }) => {
   const pathName = usePathname();
   const hideLayoutRoutes = [
-    "/routes/student-signup",
-    "/routes/login",
-    "/routes/comproot-signup",
-    "/routes/compuser-signup",
+    "/student/signup",
+    "/login",
+    "/company/signup",
+    "/employee/signup",
   ];
   const shouldHideLayout = hideLayoutRoutes.some((route) =>
     pathName.startsWith(route)

@@ -23,13 +23,13 @@ const Navbar = () => {
     if (!user) return null;
     switch (user.role) {
       case "STUDENT":
-        return "/routes/student-dashboard";
+        return "/student/dashboard";
       case "COMPANY_ROOT":
-        return "/routes/comproot-dashboard";
+        return "/company/dashboard";
       case "COMPANY_USER":
-        return "/routes/compuser-dashboard";
+        return "/employee/dashboard";
       case "ADMIN":
-        return "/routes/admin-dashboard";
+        return "/admin/dashboard";
       default:
         return null;
     }
@@ -40,8 +40,8 @@ const Navbar = () => {
   // ✅ Navbar menu links
   const menuItems = [
     { key: "home", label: "Home", path: "/" },
-    { key: "about", label: "About", path: "/routes/about" },
-    { key: "contact", label: "Contact", path: "/routes/contact" },
+    { key: "about", label: "About", path: "/about" },
+    { key: "contact", label: "Contact", path: "/contact" },
     ...(dashboardPath
       ? [{ key: "dashboard", label: "Dashboard", path: dashboardPath }]
       : []),
@@ -53,7 +53,7 @@ const Navbar = () => {
       ? [
           {
             key: "profile",
-            label: <Link href="/routes/student-profile">Profile</Link>,
+            label: <Link href="/student/profile">Profile</Link>,
             icon: <ProfileOutlined />,
           },
           {
@@ -72,20 +72,20 @@ const Navbar = () => {
     : [
         {
           key: "login",
-          label: <Link href="/routes/login">Login</Link>,
+          label: <Link href="/login">Login</Link>,
           icon: <LoginOutlined />,
         },
         {
           key: "signup-student",
           label: (
-            <Link href="/routes/student-signup">Signup as Student</Link>
+            <Link href="/student/signup">Signup as Student</Link>
           ),
           icon: <UserOutlined />,
         },
         {
           key: "signup-company",
           label: (
-            <Link href="/routes/comproot-signup">Signup as Company</Link>
+            <Link href="/company/signup">Signup as Company</Link>
           ),
           icon: <UserOutlined />,
         },
@@ -93,10 +93,10 @@ const Navbar = () => {
 
   return (
     <nav className="w-full bg-white shadow-md border-b border-gray-200 fixed top-0 left-0 z-50">
-      <div className="mx-auto flex justify-between items-center py-4 px-4 sm:px-[5vw] md:px-[7vw] lg:px-[4vw]">
+      <div className="flex justify-between items-center py-4 px-4 sm:px-[5vw] md:px-[7vw] lg:px-[4vw]">
         {/* Left: Logo */}
         <div className="text-[#003A70] font-bold text-2xl tracking-wide">
-          <Link href="/">CampusRecruit</Link>
+          <Link href="/">Campus</Link>
         </div>
 
         {/* Center Links (Desktop only) */}
@@ -123,15 +123,15 @@ const Navbar = () => {
         </div>
 
         {/* Right: User Dropdown + Mobile Toggle */}
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-1">
           {/* User Dropdown */}
           <Dropdown
             menu={{ items: dropdownItems }}
             placement="bottomRight"
             arrow
           >
-            <div className="flex items-center space-x-2 cursor-pointer md:bg-gray-100 md:px-3 py-1 md:rounded-full md:border border-[#003A70] md:hover:shadow-md transition">
-              <span className="hidden md:inline font-medium text-[#003A70]">
+            <div className="flex items-center space-x-2 cursor-pointer md:bg-gray-100 px-1.5 py-0.5 md:py-1 md:px-3 rounded-3xl border border-[#003A70] md:hover:shadow-md transition">
+              <span className="font-medium text-[#003A70]">
                 {user ? user.name.charAt(0).toUpperCase() + user.name.slice(1) : "Sign In"}
               </span>
               <Avatar

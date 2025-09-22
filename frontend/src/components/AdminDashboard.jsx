@@ -23,10 +23,10 @@ import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "react-toastify";
 
-const { Sider, Content, Header } = Layout;
+const { Sider, Content } = Layout;
 
 const AdminDashboard = () => {
-  const { token } = useAuth();
+  const { token, backendUrl } = useAuth();
   const [loading, setLoading] = useState(false);
   const [companies, setCompanies] = useState([]);
   const [jobs, setJobs] = useState([]);
@@ -40,7 +40,7 @@ const AdminDashboard = () => {
     setLoading(true);
     try {
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/companies`,
+        `${backendUrl}/users/companies`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setCompanies(res.data);

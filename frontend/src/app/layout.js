@@ -3,6 +3,7 @@ import "antd/dist/reset.css";
 import { ToastContainer } from "react-toastify";
 import { AuthProvider } from "@/context/AuthContext";
 import ClientLayout from "@/components/ClientLayout";
+import { Suspense } from "react";
 
 export const metadata = {
   title: "Campus Recruit System",
@@ -13,10 +14,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
+        <Suspense>
         <AuthProvider>
           <ClientLayout>{children}</ClientLayout>
           <ToastContainer position="top-right" autoClose={3000} />
         </AuthProvider>
+        </Suspense>
       </body>
     </html>
   );

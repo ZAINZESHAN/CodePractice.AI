@@ -10,7 +10,7 @@ import { ArrowLeftOutlined } from "@ant-design/icons";
 const { TextArea } = Input;
 
 const JobPost = () => {
-  const { token } = useAuth();
+  const { token, backendUrl } = useAuth();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [job, setJob] = useState({
@@ -49,21 +49,38 @@ const JobPost = () => {
     try {
       setLoading(true);
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/job/create`,
+        `${backendUrl}/job/create`,
         { ...job, salary: Number(job.salary) },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (res.data?.id) {
         setJob({ title: "", description: "", salary: "", location: "" });
-        router.push("/routes/comproot-dashboard");
+        router.push("/company/dashboard");
       }
     } catch (err) {
-      console.error("Job post error:", err.response?.data || err.message);
+      const errorMsg = err.response?.data?.message;
+
+      if (Array.isArray(errorMsg)) {
+        const newErrors = {};
+        errorMsg.forEach((msg) => {
+          if (msg.toLowerCase().includes("title")) newErrors.title = msg;
+          if (msg.toLowerCase().includes("description")) newErrors.description = msg;
+          if (msg.toLowerCase().includes("salary")) newErrors.salary = msg;
+          if (msg.toLowerCase().includes("location")) newErrors.location = msg;
+        });
+        setErrors(newErrors);
+      } else if (typeof errorMsg === "string") {
+        // agar single string error ho
+        console.error(errorMsg);
+      } else {
+        console.error("Job post error:", err.response?.data || err.message);
+      }
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="flex flex-col items-center py-10 px-4 sm:px-[5vw] md:px-[7vw] lg:px-[4vw]">
@@ -72,7 +89,7 @@ const JobPost = () => {
         <Button
           type="default"
           icon={<ArrowLeftOutlined />}
-          onClick={() => router.push("/routes/comproot-dashboard")}
+          onClick={() => router.push("/company/dashboard")}
           className="rounded bg-gray-200 hover:bg-gray-300"
           style={{ padding: "6px 10px" }}
         />

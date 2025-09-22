@@ -1,3 +1,4 @@
+'use client'
 import hero_img from "../assets/system2.png";
 import Image from "next/image";
 import { Button, Card } from "antd";
@@ -10,8 +11,28 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 const Home = () => {
+  const { user } = useAuth();
+  const router = useRouter();
+
+  const handleDashboardRedirect = () => {
+    if (user?.role === "STUDENT") {
+      router.push("/student/dashboard");
+    } else if (user?.role === "COMPANY_ROOT") {
+      router.push("/company/dashboard");
+    } else if (user?.role === "COMPANY_USER") {
+      router.push("/employee/dashboard");
+    } else if (user?.role === "ADMIN") {
+      router.push("/admin/dashboard");
+    }
+    else {
+      router.push("/");
+    }
+  };
+
   const steps = [
     {
       title: "For Students",
@@ -70,38 +91,51 @@ const Home = () => {
             A bridge between talented students and top companies sign up to
             start your journey.
           </p>
-          <div className="flex gap-3 pt-3">
-            <Link href={"/routes/student-signup"}>
-              <Button
-                type="primary"
-                className="transition-all duration-300 hover:scale-105 hover:border-white"
-                style={{
-                  background: "linear-gradient(90deg, #002C55, #003A70 )",
-                  borderColor: "#002C55",
-                  height: "40px",
-                  fontSize: "15px",
-                }}
-              >
-                SignUp as Student
-              </Button>
-            </Link>
+          {!user ? (
+            <div className="flex gap-2 pt-3">
+              <Link href={"/student/signup"}>
+                <Button
+                  type="primary"
+                  className="transition-all max-sm:!px-2 duration-300 hover:scale-105 hover:border-white"
+                  style={{
+                    background: "linear-gradient(90deg, #002C55, #003A70 )",
+                    borderColor: "#002C55",
+                    height: "40px",
+                  }}
+                >
+                  SignUp as Student
+                </Button>
+              </Link>
 
-            <Link href={"/routes/comproot-signup"}>
-              <Button
-                type="default"
-                className="font-bold px-6 py-2 transition-all duration-300 hover:scale-105 hover:border-[#003A70]"
-                style={{
-                  backgroundColor: "#fff",
-                  color: "#003A70",
-                  borderColor: "#fff",
-                  height: "40px",
-                  fontSize: "15px",
-                }}
-              >
-                SignUp as Company
-              </Button>
-            </Link>
-          </div>
+              <Link href={"/company/signup"}>
+                <Button
+                  type="default"
+                  className="font-bold max-sm:!px-2 transition-all duration-300 hover:scale-105 hover:border-[#003A70]"
+                  style={{
+                    backgroundColor: "#fff",
+                    color: "#003A70",
+                    borderColor: "#fff",
+                    height: "40px",
+                  }}
+                >
+                  SignUp as Company
+                </Button>
+              </Link>
+            </div>
+          ) : (
+            <Button
+              type="primary"
+              onClick={handleDashboardRedirect}
+              className="transition-all duration-300 hover:scale-105"
+              style={{
+                background: "linear-gradient(90deg, #002C55, #003A70 )",
+                borderColor: "#002C55",
+                height: "40px",
+              }}
+            >
+              Go to Dashboard
+            </Button>
+          )}
         </div>
       </div>
       {/* Card Section */}
@@ -125,31 +159,6 @@ const Home = () => {
           ))}
         </div>
       </div>
-      {/* Benefite Section */}
-      <div className="w-full bg-[#f9f9f9] py-12">
-        <h2 className="text-3xl font-bold text-center mb-12 text-[#002C55]">
-          Platform Features
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {features.map((feature, index) => (
-            <Card
-              key={index}
-              className="shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
-              style={{ borderRadius: "12px" }}
-            >
-              <div className="flex items-start gap-4">
-                <div>{feature.icon}</div>
-                <div>
-                  <h3 className="text-lg font-semibold text-[#002C55]">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-600">{feature.description}</p>
-                </div>
-              </div>
-            </Card>
-          ))}
-        </div>
-      </div>
       {/* CTA Section */}
       <div className="w-full bg-gradient-to-r from-[#E6F0FA] to-[#F9FBFD] py-12 text-center">
         <h2 className="text-2xl md:text-3xl font-bold text-[#002C55] mb-2">
@@ -161,7 +170,7 @@ const Home = () => {
 
         <div className="flex justify-center gap-4 flex-wrap">
           {/* Student Button */}
-          <Link href={"/routes/student-signup"}>
+          <Link href={"/student/signup"}>
             <Button
               type="primary"
               className="font-bold transition-all duration-300 hover:scale-105"
@@ -181,7 +190,7 @@ const Home = () => {
           </Link>
 
           {/* Company Button */}
-          <Link href={"/routes/comproot-signup"}>
+          <Link href={"/company/signup"}>
             <Button
               type="default"
               className="font-bold transition-all duration-300 hover:scale-105"
@@ -199,6 +208,31 @@ const Home = () => {
               Sign Up as Company
             </Button>
           </Link>
+        </div>
+        {/* Benefite Section */}
+        <div className="w-full bg-[#f9f9f9] py-12">
+          <h2 className="text-3xl font-bold text-center mb-12 text-[#002C55]">
+            Platform Features
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {features.map((feature, index) => (
+              <Card
+                key={index}
+                className="shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                style={{ borderRadius: "12px" }}
+              >
+                <div className="flex items-start gap-4">
+                  <div>{feature.icon}</div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-[#002C55]">
+                      {feature.title}
+                    </h3>
+                    <p className="text-gray-600">{feature.description}</p>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
         </div>
       </div>
     </div>

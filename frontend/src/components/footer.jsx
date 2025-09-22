@@ -26,7 +26,7 @@ const Footer = () => {
             </li>
             <li>
               <Link
-                href="/routes/about"
+                href="/about"
                 className="hover:text-white transition-colors"
               >
                 About
@@ -34,7 +34,7 @@ const Footer = () => {
             </li>
             <li>
               <Link
-                href="/routes/contact"
+                href="/contact"
                 className="hover:text-white transition-colors"
               >
                 Contact

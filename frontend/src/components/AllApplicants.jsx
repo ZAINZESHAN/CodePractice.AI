@@ -15,10 +15,9 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
 const { Option } = Select;
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const AllApplicant = () => {
-  const { token } = useAuth();
+  const { token, backendUrl } = useAuth();
   const [applicants, setApplicants] = useState([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter(); // router for navigation
@@ -26,7 +25,7 @@ const AllApplicant = () => {
   // Fetch all applicants
   const fetchApplicants = async () => {
     try {
-      const res = await axios.get(`${BACKEND_URL}/applications/company/all`, {
+      const res = await axios.get(`${backendUrl}/applications/company/all`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setApplicants(res.data);
@@ -45,7 +44,7 @@ const AllApplicant = () => {
   const handleStatusChange = async (appId, newStatus) => {
     try {
       await axios.patch(
-        `${BACKEND_URL}/applications/${appId}/status`,
+        `${backendUrl}/applications/${appId}/status`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -69,7 +68,7 @@ const AllApplicant = () => {
           <Button
             type="default"
             icon={<ArrowLeftOutlined />}
-            onClick={() => router.push("/routes/comproot-dashboard")}
+            onClick={() => router.push("/company/dashboard")}
             className="rounded bg-gray-200 hover:bg-gray-300"
             style={{ padding: "6px 10px" }}
           />

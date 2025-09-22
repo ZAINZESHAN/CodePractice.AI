@@ -23,23 +23,22 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const ListAllCompanyJobs = () => {
-  const { token } = useAuth();
+  const { token, backendUrl } = useAuth();
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingJob, setEditingJob] = useState(null);
-    const [disabledJobs, setDisabledJobs] = useState({}); // track disabled buttons
+  const [disabledJobs, setDisabledJobs] = useState({}); // track disabled buttons
 
   const router = useRouter();
   const [form] = Form.useForm();
 
   const fetchJobs = async () => {
     try {
-      const res = await axios.get(`${BACKEND_URL}/job`, {
+      const res = await axios.get(`${backendUrl}/job`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setJobs(res.data);
@@ -61,7 +60,7 @@ const ListAllCompanyJobs = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${BACKEND_URL}/job/delete/${id}`, {
+      await axios.delete(`${backendUrl}/job/delete/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setJobs(jobs.filter((job) => job.id !== id));
@@ -72,7 +71,7 @@ const ListAllCompanyJobs = () => {
   };
 
   const handleApplicant = (id) => {
-    router.push(`/routes/applicants?jobId=${id}`);
+    router.push(`/company/applicants?jobId=${id}`);
   };
 
   const handleEdit = (job) => {
@@ -95,7 +94,7 @@ const ListAllCompanyJobs = () => {
         salary: values.salary ? Number(values.salary) : 0,
       };
 
-      await axios.patch(`${BACKEND_URL}/job/update/${editingJob.id}`, payload, {
+      await axios.patch(`${backendUrl}/job/update/${editingJob.id}`, payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -149,7 +148,7 @@ const ListAllCompanyJobs = () => {
                 <EnvironmentOutlined /> {job.location}
               </p>
 
-              <div className="flex justify-end gap-2">
+              <div className="flex flex-col sm:flex-row justify-end gap-2">
                 <Button
                   type="primary"
                   icon={<UserOutlined />}
@@ -158,6 +157,7 @@ const ListAllCompanyJobs = () => {
                 >
                   View Applicants
                 </Button>
+
                 <Button
                   type="primary"
                   icon={<EditOutlined />}
@@ -178,6 +178,7 @@ const ListAllCompanyJobs = () => {
                   </Button>
                 </Popconfirm>
               </div>
+
             </Card>
           </List.Item>
         )}

@@ -20,46 +20,25 @@ const CompRootDashboard = () => {
   const router = useRouter();
   const [disabled, setDisabled] = useState(false);
 
-  // const steps = [
-  //   {
-  //     title: "Create your free account",
-  //     description:
-  //       "All you need is your email address to create an account and start building your job post.",
-  //     icon: <div className="text-[#003A70] text-xl font-bold mb-7">1</div>,
-  //   },
-  //   {
-  //     title: "Build your job post",
-  //     description:
-  //       "Then just add a title, description, and location to your job post, and you're ready to go.",
-  //     icon: <div className="text-[#003A70] text-xl font-bold mb-7">2</div>,
-  //   },
-  //   {
-  //     title: "Post Your Job",
-  //     description:
-  //       "After you post your job use our state of the art tools to help you find dream talent.",
-  //     icon: <div className="text-[#003A70] text-xl font-bold mb-7">3</div>,
-  //   },
-  // ];
-
   const quickActions = [
     {
       title: "Post a Job",
-      path: "/routes/job-posting",
+      path: "/company/posting",
       icon: <PlusOutlined className="text-2xl text-[#003A70]" />,
     },
     {
       title: "Manage Jobs",
-      path: "/routes/managecompany-jobs",
+      path: "/company/jobs",
       icon: <UnorderedListOutlined className="text-2xl text-[#003A70]" />,
     },
     {
       title: "View Applications",
-      path: "/routes/all-applicants",
+      path: "/company/all-applicants",
       icon: <FileSearchOutlined className="text-2xl text-[#003A70]" />,
     },
     {
       title: "Manage Users",
-      path: "/routes/managecompany-users",
+      path: "/company/users",
       icon: <TeamOutlined className="text-2xl text-[#003A70]" />,
     },
   ];
@@ -75,7 +54,7 @@ const CompRootDashboard = () => {
           <button
             onClick={() => {
               setDisabled(true);
-              router.push("/routes/job-posting");
+              router.push("/company/posting");
             }}
             disabled={disabled}
             className={`mt-6 bg-[#003A70] md:w-[180px] h-[50px] rounded-md font-bold text-white transition-all duration-300 hover:scale-105 ${
@@ -95,23 +74,6 @@ const CompRootDashboard = () => {
           />
         </div>
       </div>
-
-      {/* Steps Section */}
-      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-20 px-6 lg:px-0 w-full lg:w-[80%]">
-        {steps.map((step, index) => (
-          <Card
-            key={index}
-            className="shadow-md hover:shadow-xl transition-all duration-300 mb-8"
-            style={{ borderRadius: "12px" }}
-          >
-            <div>{step.icon}</div>
-            <h3 className="text-[24px] font-semibold text-black mb-4">
-              {step.title}
-            </h3>
-            <p className="text-gray-600">{step.description}</p>
-          </Card>
-        ))}
-      </div> */}
 
       {/* Quick Actions */}
       <div className="w-full lg:w-[80%] mt-12 px-6 lg:px-0">
@@ -157,7 +119,7 @@ const CompRootDashboard = () => {
           <button
             onClick={() => {
               setDisabled(true);
-              router.push("/routes/job-posting");
+              router.push("/employee/signup");
             }}
             disabled={disabled}
             className={`bg-[#003A70] px-6 py-2 rounded-md font-bold hover:scale-105 transition-all duration-300 ${
@@ -192,7 +154,6 @@ const CompRootDashboard = () => {
         <CompUserList />
       </div>
 
-      {/* All Applicants */}
     </div>
   );
 };

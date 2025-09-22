@@ -25,16 +25,15 @@ import { useAuth } from "@/context/AuthContext";
 const { Title, Text, Paragraph } = Typography;
 
 const StudentProfile = () => {
-  const { user, token } = useAuth();
+  const { user, token,backendUrl } = useAuth();
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   useEffect(() => {
     const fetchApplications = async () => {
       try {
-        const res = await axios.get(`${BACKEND_URL}/applications/my`, {
+        const res = await axios.get(`${backendUrl}/applications/my`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setApplications(res.data);

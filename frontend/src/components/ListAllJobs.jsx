@@ -14,8 +14,7 @@ import { useAuth } from "../context/AuthContext";
 import { toast } from "react-toastify";
 
 const ListAllJobs = ({ searchQuery = "" }) => {
-  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-  const { token, user, updateUser } = useAuth();
+  const { token, user, updateUser,backendUrl } = useAuth();
 
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -33,13 +32,13 @@ const ListAllJobs = ({ searchQuery = "" }) => {
     let res;
     if (user?.interest && user?.location) {
       // Filtered jobs
-      res = await axios.get(`${BACKEND_URL}/job/filter`, {
+      res = await axios.get(`${backendUrl}/job/filter`, {
         params: { interest: user.interest, location: user.location },
         headers: { Authorization: `Bearer ${token}` },
       });
     } else {
       // All jobs
-      res = await axios.get(`${BACKEND_URL}/job/all`, {
+      res = await axios.get(`${backendUrl}/job/all`, {
         headers: { Authorization: `Bearer ${token}` },
       });
     }
@@ -54,7 +53,7 @@ const ListAllJobs = ({ searchQuery = "" }) => {
   // Fetch applied jobs of student
   const fetchAppliedJobs = async () => {
     try {
-      const res = await axios.get(`${BACKEND_URL}/applications/my`, {
+      const res = await axios.get(`${backendUrl}/applications/my`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAppliedJobs(res.data); // store full objects including status
@@ -111,7 +110,7 @@ const ListAllJobs = ({ searchQuery = "" }) => {
       const phoneNumber = values.number.toString();
 
       const res = await axios.post(
-        `${BACKEND_URL}/applications/apply`,
+        `${backendUrl}/applications/apply`,
         {
           jobId: selectedJob.id,
           phoneNumber,

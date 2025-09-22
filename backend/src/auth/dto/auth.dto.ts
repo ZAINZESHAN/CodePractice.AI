@@ -2,7 +2,7 @@ import { IsEmail, IsString, Length } from 'class-validator';
 
 export class RegisterDto {
   @IsString()
-  @Length(3, 20, { message: 'Name must be between 6 and 20 characters' })
+  @Length(3, 20, { message: 'Name must be between 3 and 20 characters' })
   name: string;
 
   @IsEmail({}, { message: 'Invalid email format' })

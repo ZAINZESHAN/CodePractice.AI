@@ -7,13 +7,13 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 
 const { Title, Text } = Typography;
-const BACKEND_URL = "http://localhost:5000";
 
 const CompUserAuth = () => {
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { backendUrl } = useAuth();
   const router = useRouter();
   const [form] = Form.useForm();
 
@@ -25,27 +25,48 @@ const CompUserAuth = () => {
 
       const payload = {
         ...values,
-        companyId: Number(companyId), // 👈 ensure number
+        companyId: Number(companyId),
       };
 
-      console.log(payload);
       const res = await axios.post(
-        `${BACKEND_URL}/auth/register-company-user`,
+        `${backendUrl}/auth/register-company-user`,
         payload,
         {
           headers: {
-            Authorization: `Bearer ${token}`, // 👈 zaroori
+            Authorization: `Bearer ${token}`,
           },
-        },
+        }
       );
 
       if (res.data.success) {
         toast.success(res.data.message || "Employee created successfully");
         form.resetFields();
-        router.push("/routes/compuser-dashboard");
+        router.push("/employee/dashboard");
       }
     } catch (err) {
-      toast.error(err.response?.data?.message || "Something went wrong!");
+      const messages = err.response?.data?.message;
+
+      if (Array.isArray(messages)) {
+        // backend se array of validation errors aya
+        const fields = messages.map((msg) => {
+          if (msg.toLowerCase().includes("name")) {
+            return { name: "name", errors: [msg] };
+          }
+          if (msg.toLowerCase().includes("email")) {
+            return { name: "email", errors: [msg] };
+          }
+          if (msg.toLowerCase().includes("password")) {
+            return { name: "password", errors: [msg] };
+          }
+          if (msg.toLowerCase().includes("company id")) {
+            return { name: "companyId", errors: [msg] };
+          }
+          return { name: "_error", errors: [msg] };
+        });
+        form.setFields(fields);
+      } else {
+        toast.error(messages || "Something went wrong!");
+      }
     }
     setLoading(false);
   };
@@ -59,6 +80,22 @@ const CompUserAuth = () => {
         alignItems: "center",
       }}
     >
+      {/* Back Button - Top Left */}
+      <div style={{ position: "absolute", top: 20, left: 20 }}>
+        <Link href="/">
+          <Button
+            icon={<ArrowLeftOutlined />}
+            style={{
+              backgroundColor: "#f5f5f5",
+              borderColor: "#d9d9d9",
+              color: "#003A70",
+              fontWeight: 500,
+            }}
+          >
+            Back to Home
+          </Button>
+        </Link>
+      </div>
       <div
         style={{
           width: 400,
@@ -120,7 +157,7 @@ const CompUserAuth = () => {
         <Text style={{ display: "block", marginTop: 15, textAlign: "center" }}>
           Already have an account?{" "}
           <Link
-            href={"/routes/login"}
+            href={"/login"}
             style={{ color: "#003A70", fontWeight: 600, cursor: "pointer" }}
           >
             Login

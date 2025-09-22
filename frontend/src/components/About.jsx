@@ -35,7 +35,7 @@ const About = () => {
           <ul className="list-disc pl-5 text-gray-600 space-y-2 leading-relaxed">
             <li>
               <Link
-                href="/routes/comproot-signup"
+                href="/company/signup"
                 className="text-black hover:text-[#003A70] hover:underline"
               >
                 Create a Company
@@ -43,7 +43,7 @@ const About = () => {
             </li>
             <li>
               <Link
-                href="/routes/student-signup"
+                href="/student/signup"
                 className="text-black hover:text-[#003A70] hover:underline"
               >
                 Sign in as a Student

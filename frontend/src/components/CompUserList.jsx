@@ -11,16 +11,14 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-
 const CompUserList = () => {
-  const { token } = useAuth();
+  const { token, backendUrl } = useAuth();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get(`${BACKEND_URL}/users/company-users`, {
+      const res = await axios.get(`${backendUrl}/users/company-users`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       console.log(res.data)
@@ -40,7 +38,7 @@ const CompUserList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${BACKEND_URL}/users/delete/${id}`, {
+      await axios.delete(`${backendUrl}/users/delete/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(users.filter((user) => user.id !== id));

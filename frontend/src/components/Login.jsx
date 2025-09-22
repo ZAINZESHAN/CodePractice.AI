@@ -2,18 +2,18 @@
 
 import { useState } from "react";
 import { Card, Form, Input, Button, Typography } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { UserOutlined, LockOutlined, ArrowLeftOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 
 const { Text } = Typography;
-const BACKEND_URL = "http://localhost:5000";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { login, backendUrl } = useAuth();
   const router = useRouter();
 
   const [form] = Form.useForm();
@@ -21,16 +21,16 @@ const Login = () => {
   const redirectUser = (role) => {
     switch (role) {
       case "STUDENT":
-        router.push("/routes/student-dashboard");
+        router.push("/student/dashboard");
         break;
       case "COMPANY_ROOT":
-        router.push("/routes/comproot-dashboard");
+        router.push("/company/dashboard");
         break;
       case "COMPANY_USER":
-        router.push("/routes/compuser-dashboard");
+        router.push("/employee/dashboard");
         break;
       case "ADMIN":
-        router.push("/routes/admin-dashboard");
+        router.push("/admin/dashboard");
         break;
       default:
         router.push("/");
@@ -40,7 +40,7 @@ const Login = () => {
   const onFinish = async (values) => {
     setLoading(true);
     try {
-      const res = await axios.post(`${BACKEND_URL}/auth/login`, values);
+      const res = await axios.post(`${backendUrl}/auth/login`, values);
       if (res.data.success) {
         login(res.data.user, res.data.token);
         toast.success("Login successful!");
@@ -48,14 +48,51 @@ const Login = () => {
         redirectUser(res.data.user.role);
       }
     } catch (err) {
-      toast.error(err.response?.data?.message || "Login failed!");
+      const errorMsg = err.response?.data?.message;
+
+      if (Array.isArray(errorMsg)) {
+        const emailError = errorMsg.find((msg) =>
+          msg.toLowerCase().includes("email")
+        );
+        if (emailError) {
+          form.setFields([{ name: "email", errors: [emailError] }]);
+        }
+
+        const passwordError = errorMsg.find((msg) =>
+          msg.toLowerCase().includes("password")
+        );
+        if (passwordError) {
+          form.setFields([{ name: "password", errors: [passwordError] }]);
+        }
+      } else if (typeof errorMsg === "string") {
+        toast.error(errorMsg);
+      } else {
+        toast.error("Login failed!");
+      }
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br p-4">
+    <div className="relative flex justify-center items-center min-h-screen bg-gradient-to-br p-4">
+      {/* Back to Home Button - Top Left */}
+      <div className="absolute top-5 left-5">
+        <Link href="/">
+          <Button
+            icon={<ArrowLeftOutlined />}
+            style={{
+              backgroundColor: "#f5f5f5",
+              borderColor: "#d9d9d9",
+              color: "#003A70",
+              fontWeight: 500,
+            }}
+          >
+            Back to Home
+          </Button>
+        </Link>
+      </div>
+
       <Card
         className="w-full max-w-md shadow-2xl rounded-2xl p-6"
         style={{ background: "#fff" }}
@@ -110,7 +147,7 @@ const Login = () => {
         <p className="text-center text-gray-600 mt-3">
           Don’t have an account?{" "}
           <a
-            href="/routes/student-signup"
+            href="/student/signup"
             style={{ color: "#003A70", fontWeight: 600 }}
           >
             Sign Up

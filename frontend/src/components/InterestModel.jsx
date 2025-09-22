@@ -10,8 +10,7 @@ import { toast } from "react-toastify";
 const { Option } = Select;
 
 const InterestModel = ({ onSkip, onSave }) => {
-  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-  const { token, updateUser } = useAuth();
+  const { token, updateUser, backendUrl } = useAuth();
   const [formData, setFormData] = useState({
     interest: "",
     location: "",
@@ -26,7 +25,7 @@ const InterestModel = ({ onSkip, onSave }) => {
 
   const handleSubmit = async () => {
     try {
-      const res = await axios.patch(`${BACKEND_URL}/profile/update`, formData, {
+      const res = await axios.patch(`${backendUrl}/profile/update`, formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

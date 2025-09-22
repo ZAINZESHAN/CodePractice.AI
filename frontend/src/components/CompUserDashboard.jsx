@@ -5,8 +5,10 @@ import React from "react";
 import job_img from "../assets/job-img.png";
 import Image from "next/image";
 import ListAllCompanyJobs from "./ListAllCompanyJobs";
+import { useRouter } from "next/navigation";
 
 const CompUserDashboard = () => {
+const router = useRouter()  
   return (
     <div className="flex flex-col items-center pb-20">
       {/* Hero Section */}
@@ -17,7 +19,7 @@ const CompUserDashboard = () => {
           </h1>
           <button
             onClick={() => {
-              router.push("/routes/job-posting");
+              router.push("/employee/posting");
             }}
             className={`mt-6 bg-[#003A70] md:w-[180px] h-[50px] rounded-md font-bold text-white transition-all duration-300 hover:scale-105`}
           >

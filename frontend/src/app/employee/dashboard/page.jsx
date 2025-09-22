@@ -1,5 +1,4 @@
 import CompUserDashboard from "@/components/CompUserDashboard";
-import CompUserNavbar from "@/components/CompUserNavbar";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import React from "react";
 
